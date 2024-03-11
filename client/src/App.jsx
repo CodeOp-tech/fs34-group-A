@@ -6,18 +6,22 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
      
       <h1>WordQuest</h1>
+      <div>
+        <Link className="nav-link" to="/">
+          Home
+        </Link>
+      </div>
       
       <Routes> 
       <Route path="/" element={<Home />} />
       </Routes>
     </>
-  )
+  );
 }
 
 export default App

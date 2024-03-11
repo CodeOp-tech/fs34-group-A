@@ -11,7 +11,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       User.hasMany(models.Game, { foreignKey: 'userId' });
-      User.hasMany(models.Participant, { foreignKey: 'userId' });
+      // belongsMa
+      User.belongsToMany(models.Game, { through: models.Participation,
+        as: 'rounds' });
     }
   }
   User.init({

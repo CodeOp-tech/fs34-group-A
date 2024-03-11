@@ -14,10 +14,12 @@ router.get("/", async function (req, res, next) {
 // post - get user id from token
 router.post("/", async function (req, res, next) {
     const { solution } = req.body;
+
     // const userId = req.userId; // User ID extracted from the token
     try {
         const game = await models.Game.create( { solution } );
-        // add participants to game
+        // add players to game. Does the user exist. If so add
+        // if user does not exist still add to participants, userid null but add email to email column
         res.send(game);
       } catch (error) {
         res.status(500).send(error);

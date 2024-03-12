@@ -13,9 +13,9 @@ var bcrypt = require("bcrypt");//newly added
 const saltRounds = 10; //newly added
 const userShouldBeLoggedIn = require("../guards/userShouldBeLoggedIn") //newly added
 const supersecret = process.env.SUPER_SECRET;
+const { User } = require('../models');
 
-
-
+// Postman Test = OK (http://localhost:4000/api/users)
 router.get("/", async function (req, res, next) {
     try {
         const user = await models.User.findAll();
@@ -37,6 +37,7 @@ router.get("/", async function (req, res, next) {
 // });
 
 // get one by id
+// Postman Test = OK (http://localhost:4000/api/users/1)
 router.get("/:id", async function (req, res, next) {
     const { id } = req.params;
     try {
@@ -55,6 +56,7 @@ router.get("/:id", async function (req, res, next) {
 // Shrudhi: 
 
 // This is to register
+// Postman Test = OK (http://localhost:4000/api/users/register)
 router.post("/register", async (req,res) => {
   const { username, email, password } = req.body;
   
@@ -69,7 +71,8 @@ router.post("/register", async (req,res) => {
 
 
 //This is to double check if the email address already exists in the database. 
-router.post("/check", async (req, res) => {
+// Postman Test = OK (http://localhost:4000/api/users/email)
+router.post("/email", async (req, res) => {
   const { email } = req.body;
 
   try {
@@ -91,6 +94,7 @@ router.post("/check", async (req, res) => {
 });
 
 //This is for logging in.
+// Postman Test = OK (http://localhost:4000/api/users/login)
 router.post("/login", async (req, res) => {
   const { username, password } = req.body;
 

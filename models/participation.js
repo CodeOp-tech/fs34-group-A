@@ -20,7 +20,8 @@ module.exports = (sequelize, DataTypes) => {
     gameId: DataTypes.INTEGER,
     score: DataTypes.INTEGER,
     startedAt: DataTypes.DATE,
-    completedAt: DataTypes.DATE
+    completedAt: DataTypes.DATE,
+    email: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'Participation',

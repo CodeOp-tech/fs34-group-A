@@ -8,25 +8,28 @@
 var express = require("express");
 var router = express.Router();
 const models = require("../models");
-const userShouldBeLoggedIn = require("../guards/userShouldBeLoggedIn")
+const userShouldBeLoggedIn = require("../guards/userShouldBeLoggedIn");
+const { User } = require('../models');
 
-router.get("/", async function (req, res, next) {
+
+// Postman Test = OK (http://localhost:4000/api/participation)
+router.get("/", userShouldBeLoggedIn, async (req, res, next) => {
     try {
-        const participants = await models.Participant.findAll( {include: models.Game} );
-        res.send(participants);
+        const participations = await models.Participation.findAll( {include: models.Game} );
+        res.send(participations);
       } catch (error) {
         res.status(500).send(error);
       }
 });
 
 //  to create an endpoint to update a participant's play information
-router.put('/participation/:id/play', async (req, res) => {
+router.put('/participation/:id/play', userShouldBeLoggedIn, async (req, res) => {
   const { id } = req.params;
   const { score, completedAt } = req.body;
 
   try {
     // Find the participant with the specified ID and include the associated Game with userId check
-    const participant = await Participation.findOne({
+    const participant = await models.Participation.findOne({
       where: {
         id,
       },
@@ -58,23 +61,17 @@ router.put('/participation/:id/play', async (req, res) => {
 /*   shrudhi
     This route updates the userId for new players.
 */
-
-router.put("/:participationId", userShouldBeLoggedIn, async (req, res, next) => {
+// Postman Test = OK (http://localhost:4000/api/participation/:id)
+router.put("/:id", userShouldBeLoggedIn, async (req, res, next) => {
   const { id } = req.params;
   const userId = req.userId; // User ID extracted from the token
 
   try {
       // Update the userId in the participation table where it's currently null for the specified id
-      const updatedParticipationCount = await models.Participation.update(
-          { userId },
-          { where: { id, userId: null } }
-      );
+      await models.Participation.update({ userId },{ where: { id, userId: null } });
 
-      if (updatedParticipationCount === 0) {
-          return res.status(400).send("No participation record found with null userId for this participation ID");
-      }
-
-      res.send("User ID updated successfully");
+      res.send({message : "User ID updated successfully"});
+      //wrap in an object with message 
   } catch (error) {
       res.status(500).send(error);
   }

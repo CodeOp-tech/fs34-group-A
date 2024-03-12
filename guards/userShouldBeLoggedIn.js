@@ -2,7 +2,7 @@ var jwt = require("jsonwebtoken"); // i need the library
 const models = require("../models");
 require("dotenv").config(); 
 const supersecret = process.env.SUPER_SECRET; // i need the super secret
-
+const { User } = require('../models');
 
 /* 
 The userShouldBeLoggedIn function is a middleware function that takes 
@@ -14,7 +14,7 @@ Token Verification: If a token is provided, it verifies its validity using the
 jsonwebtoken library's verify method. It uses the supersecret key to verify the token's 
 signature. If verification fails, it sends a 401 response with the error message.
 */
-function userShouldBeLoggedIn(req, res, next) {
+async function userShouldBeLoggedIn(req, res, next) {
   const token = req.headers["authorization"]?.replace(/^Bearer\s/, "");
   if (!token) { //if i didn't send a token, then kicked out
     res.status(401).send({ message: "Please provide a token" });

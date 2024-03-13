@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       Game.belongsTo(models.User, { foreignKey: 'userId' });
       Game.belongsToMany(models.User, {
         through: models.Participation,
-        // foreignKey: 'gameId',
+         foreignKey: 'gameId'
         // as: 'players'
       });
       Game.hasMany(models.Participation)

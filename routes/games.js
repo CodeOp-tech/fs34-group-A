@@ -9,9 +9,12 @@ var router = express.Router();
 const models = require("../models");
 const axios = require('axios'); //
 const userShouldBeLoggedIn = require("../guards/userShouldBeLoggedIn") //
+const { User } = require('../models');
+
 
 //This retrieves the whole games table data
-router.get("/", async function (req, res, next) {
+// Postman Test = OK (http://localhost:4000/api/games)
+router.get("/", userShouldBeLoggedIn, async (req, res, next) => {
     try {
         const game = await models.Game.findAll();
         res.send(game);
@@ -34,20 +37,21 @@ router.get("/", async function (req, res, next) {
 //       }
 // });
 
-// This finds a game based on game Id (not sure if needed)
-// router.get("/:id", async function (req, res, next) {
-//     const { id } = req.params;
-//     try {
-//         const games = await models.Game.findOne({
-//             where: {
-//               id,
-//             },
-//         });
-//         res.send(games);
-//       } catch (error) {
-//         res.status(500).send(error);
-//       }
-// });
+//This finds a game based on game Id (not sure if needed)
+// Postman Test = OK (http://localhost:4000/api/games/1)
+router.get("/:id", userShouldBeLoggedIn, async (req, res, next) => {
+    const { id } = req.params;
+    try {
+        const games = await models.Game.findOne({
+            where: {
+              id,
+            },
+        });
+        res.send(games);
+      } catch (error) {
+        res.status(500).send(error);
+      }
+});
 
 // create a new game for this participant by id. need to check name or if username/puzzle name. 
 // use token
@@ -88,14 +92,16 @@ router.get("/", async function (req, res, next) {
         - Participation records creation is performed using Sequelize's create() method.
         - Multiple participation records are created in parallel using Promise.all() to handle asynchronous creation.
 */
+
+// Postman Test = OK (http://localhost:4000/api/games)
 router.post("/", userShouldBeLoggedIn, async (req, res, next) => {
   const userId = req.userId; // User ID extracted from the token
-  const { email } = req.body; // Remove username
+  const { emails } = req.body; // Remove username
 
   try {
       // Call external API to fetch solution
-      const apiResponse = await axios.get(`https://perenual.com/api/species-list?key=${process.env.API_KEY}&${query}`);
-      const solution = apiResponse.data.solution; // Assuming the API response contains a solution
+      const apiResponse = await axios.get(`https://random-word-api.vercel.app/api?words=1&type=capitalized`);
+      const solution = apiResponse.data[0]; // Assuming the API response is an array of words, and we extract the first one
 
       // Create a new game with the provided solution
       const game = await models.Game.create({ solution, userId });
@@ -104,7 +110,7 @@ router.post("/", userShouldBeLoggedIn, async (req, res, next) => {
         // We expect an array of emails in the request body instead of a single email.
         // We iterate over each email in the emails array using Array.map() and create a participation record for each email.
         // We use Promise.all() to asynchronously create all participation records and wait for all promises to resolve.
-        const participants = await Promise.all(emails.map(async (email) => {
+        await Promise.all(emails.map(async (email) => {
           let participantUserId = null; // Initialize participantUserId as null
 
           // Check if the user with the provided email exists
@@ -113,7 +119,6 @@ router.post("/", userShouldBeLoggedIn, async (req, res, next) => {
           if (user) {
               participantUserId = user.id; // Set participantUserId if user exists
           }
-
           // Create a new participation record
           return models.Participation.create({ userId: participantUserId, gameId: game.id, email });
       }));
@@ -123,4 +128,8 @@ router.post("/", userShouldBeLoggedIn, async (req, res, next) => {
       res.status(500).send(error);
   }
 });
+
+
+      // const apiResponse = await axios.get(`https://random-word-api.vercel.app/api?words=1&type=capitalized=${process.env.API_KEY}&${query}`);
+      // const solution = apiResponse.data.solution; // Assuming the API response contains a solution
 module.exports = router;

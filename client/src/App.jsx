@@ -1,44 +1,54 @@
-import React from 'react';
-import { Routes, Route, Link } from "react-router-dom";
-import './App.css';
-import Game from './pages/Game';
-import Profile from './pages/Profile';
+
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
+import NavBar from './components/NavBar';
 import Home from './pages/Home';
-import "bootstrap/dist/css/bootstrap.min.css";
-import Login from './components/Login';
+import Profile from './components/Profile';
+import Game from './components/Game';
+import RegistrationPage from './components/RegistrationPage';
+import LoginPage from './components/LoginPage';
+import AuthContext from './context/AuthContext';
 
 
-function App() {
+export default function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  function signIn() {
+    setIsLoggedIn(true);
+  }
+
+  function signOut() {
+    setIsLoggedIn(false);
+  }
+
+  const authObject = {
+    isLoggedIn,
+    signIn,
+    signOut,
+  };
+  
   return (
-    <>
-     
-      <h1>WordQuest</h1>
-      <div>
-        <ul>
-          <li>
-        <Link to="/">Home</Link>
-        </li>
-        <li>
-        <Link to="/profile">Profile</Link>
-        </li>
-        <li>
-        <Link to="/game">Game</Link>
-        </li>
-        <li>
-        <Link to="/login">Login</Link>
-        </li>
-        </ul>
-      </div>
+    
+    <AuthContext.Provider value={authObject}>
       
-      <Routes> 
-      <Route path="/" element={<Home />} />
-      <Route path="/profile" element={<Profile />} />
-      <Route path="/game" element={<Game />} />
-      <Route path="/login" element={<Login />} />
-      </Routes>
-    </>
+        <div>
+    
+      <div className="container text-center">
+        <NavBar />
+
+        <div className="container mx-auto">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/register" element={<RegistrationPage />} /> 
+            <Route path="/game" element={<Game />} /> 
+            <Route path="/login" element={<LoginPage />} />
+          </Routes>
+          </div>
+        </div>
+      </div>
+    </AuthContext.Provider>
   );
 }
 
-export default App;

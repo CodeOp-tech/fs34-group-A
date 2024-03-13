@@ -1,6 +1,22 @@
 import React from 'react'
+import { useState } from 'react';
+import axios from 'axios';//
 
-const LoginPage = () => {
+/*
+  1. Need a "Create Group" button, so when clicked : 
+      (a) Input Containers to Add Email Address (Add email buttons)
+      (b) Send Invitation button like a handlesubmit button, so when clicked: 
+          - Sends a post request to endpoint=>  router.post("/", userShouldBeLoggedIn, async (req, res, next).
+          - Sends out email invitations.
+
+*/
+
+
+const ProfilePage = () => {
+  const [emails, setEmails] = useState([]);
+  const [groupCreated, setGroupCreated] = useState(false);
+
+
   return (
     <div className="bg-gray-200 h-screen flex items-center justify-center">
       <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
@@ -38,4 +54,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default ProfilePage;

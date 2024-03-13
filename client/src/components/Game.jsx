@@ -2,10 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 //here i set the states i need for the game to work
-=======
-
-//here i set the states i need for the game to work
-
 
 const WordQuest = () => {
  const [words, setWords] = useState([]);
@@ -15,24 +11,15 @@ const WordQuest = () => {
  const [guess, setGuess] = useState('');
  const [result, setResult] = useState('');
 
- //******************************************************************************************************************** */
- // IT WORKS
- //here i need the useEffect to fetch a list of words from the API
- //to do so, i need to use axios and it needs to change the word every time the currentWordIndex changes
- // then i need to store the words used in their variable and i need to call the masked word for the first round
-=======
-
 
  //******************************************************************************************************************** */
-
-
+ 
  // IT WORKS
-
 
  //here i need the useEffect to fetch a list of words from the API
  //to do so, i need to use axios and it needs to change the word every time the currentWordIndex changes
  // then i need to store the words used in their variable and i need to call the masked word for the first round
-
+ 
  useEffect(() => {
   //fetching words from the API - this should work
   const fetchWords = async () => {
@@ -48,18 +35,10 @@ const WordQuest = () => {
   fetchWords();
  }, [currentWordIndex]);
 
-//************************************************************************************************************************ */
-// IT WORKS
-//i need to MASK or HIDE the word fetched
-// and i need to only show the FIRST and LAST letter of the word
-=======
-
 
 //************************************************************************************************************************ */
 
-
 // IT WORKS
-
 
 //i need to MASK or HIDE the word fetched
 // and i need to only show the FIRST and LAST letter of the word
@@ -81,24 +60,16 @@ const WordQuest = () => {
   setMaskedWord(initialMaskedWord);
  };
 
-//******************************************************************************************************************************** */
-// DOES NOT WORK
-// handleGuessSubmit to submit the guessed word or letter
-// i need toLowerCase to ensure insensitivity to the guess like in previous exercises
-=======
-
 
 //******************************************************************************************************************************** */
-
-
 // DOES NOT WORK
 
 
 // handleGuessSubmit to submit the guessed word or letter
 // i need toLowerCase to ensure insensitivity to the guess like in previous exercises
+ 
 
-
- const handleGuessSubmit = () => {
+const handleGuessSubmit = () => {
   const currentWord = words[currentWordIndex].toLowerCase();
   // Update guessed letters?? NOT SURE ABOUT THIS. IT DOES NOT WORK
   // how do i update the gussed letters into the original fetched word so the user can guess again?
@@ -128,30 +99,17 @@ const WordQuest = () => {
   }
  };
 
- //****************************************************************************************************************************** */
- // IT WORKS
- // MAYBE NOT NEEDED - JUST TRYING THINGS OUT ATM
- // TO CHECK IF WE WANT TO USE ROUNDS - A ROUND OF 3 WORDS PER DAY?
-=======
-
 
  //****************************************************************************************************************************** */
-
-
  // IT WORKS
-
 
  // MAYBE NOT NEEDED - JUST TRYING THINGS OUT ATM
  // TO CHECK IF WE WANT TO USE ROUNDS - A ROUND OF 3 WORDS PER DAY?
-
-
 
  // possibility to go to the next word and guess again. do we want this?
  // this can be otional
  // i need to make sure it resets the word once you skip to the next one
  // and it also needs to reset the guesses from the user
-
-=======
 
 
  const handleNextWord = () => {
@@ -167,31 +125,17 @@ const WordQuest = () => {
  };
 
  //************************************************************************************************************************** */
-  //return statement
+  
+ //return statement
   //JUST A DRAFT
   //handleGuessSubmit - once it is submit you need to call the word that is fetched
   // before the split method - the word should appeared from the state (first function)
- return (
+ 
+ 
+  return (
   <div className="flex items-center justify-center h-screen">
       <div className="bg-white p-8 rounded shadow-md max-w-md">
         <h2 className="text-2xl font-semibold mb-6">WordQuest</h2>
-=======
-
- 
- //************************************************************************************************************************** */
-
-
-  //return statement
-  //JUST A DRAFT
-
-
-  //handleGuessSubmit - once it is submit you need to call the word that is fetched
-  // before the split method - the word should appeared from the state (first function)
-
-
- return (
-  <div>
-
    <h2>WordQuest</h2>
    <p>Today's Word: {maskedWord}</p>
    <p>You guessed: {guessedLetters.join(', ')}</p>
@@ -205,10 +149,7 @@ const WordQuest = () => {
    <button onClick={handleNextWord}>Next Word</button>
    <p>{result}</p>
   </div>
-
   </div>
-=======
-
  );
 };
 export default WordQuest;

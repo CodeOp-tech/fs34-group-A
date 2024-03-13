@@ -9,7 +9,10 @@ const WordQuest = () => {
   const [maskedWord, setMaskedWord] = useState('');
   const [attemptsLeft, setAttemptsLeft] = useState(3); //number of total attempts 
   const [result, setResult] = useState('');
+  const [nextGameTime, setNextGameTime] = useState('');
+  const [gameAvailable, setGameAvailable] = useState(true);
 
+  
 //******************************************************************************************************************** */
  
  // IT WORKS 
@@ -48,7 +51,7 @@ const WordQuest = () => {
 
   //****************************************************************************************************** */
 
-// THIS WORKS!!
+// IT WORKS
 
 // if else statement for the guessed word 
 // if it matches well done, if not another guess
@@ -65,14 +68,14 @@ const handleGuessSubmit = () => {
     // if it matches display congrats
     // if not you failed
     if (guessedWord.toLowerCase() === currentWord) {
-      setResult('Well done, you guessed the word!');
+      setResult(`Well done, you guessed the word: ${currentWord}!`);
     } else {
       // also if the guessed word does not match the actual word i have one attempt less
       //i need to DECREASE the number of attempts left by 1 each time
       // after the last attempt then i should display the try again tomorrow message
       setAttemptsLeft(attemptsLeft - 1);
       if (attemptsLeft === 1) {
-        setResult('You failed! Try again tomorrow.');
+        setResult(`You failed! The word was: ${currentWord}. Try again tomorrow.`);
       } else {
         // but if i have attempts left then i need to call another function
         // i want to be able to reveal a new letter after each attempt
@@ -82,8 +85,9 @@ const handleGuessSubmit = () => {
   };
 
 
-  //another if statement - render call back the word
-  // if attempt left one - call back the word - regardless of the result
+
+  // with the styling: we need to show the currentWord either bold or another colour
+  // how to do this?
 
   //******************************************************************************************************** */
 

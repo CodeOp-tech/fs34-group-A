@@ -10,6 +10,7 @@ const models = require("../models");
 const axios = require('axios'); //
 const userShouldBeLoggedIn = require("../guards/userShouldBeLoggedIn") //
 const { User } = require('../models');
+const nodemailer = require('nodemailer');
 
 
 //This retrieves the whole games table data
@@ -119,6 +120,9 @@ router.post("/", userShouldBeLoggedIn, async (req, res, next) => {
           if (user) {
               participantUserId = user.id; // Set participantUserId if user exists
           }
+
+          //send email 
+ //         sendEmail(email)
           // Create a new participation record
           return models.Participation.create({ userId: participantUserId, gameId: game.id, email });
       }));
@@ -129,6 +133,92 @@ router.post("/", userShouldBeLoggedIn, async (req, res, next) => {
   }
 });
 
+// function sendEmail(receiver, eventid, eventname, location, date, firstname) {
+//   let confirmationLink = `http://localhost:5173/events/${eventid}/confirm?email=${receiver}`;
+//   const formattedDate = new Date(date).toLocaleString("en-US", {
+//     dateStyle: "short",
+//     timeStyle: "short",
+//   });
+//   try {
+//     const info = transporter.sendMail(
+//       {
+//         from: `Arianne Napa <${EMAIL_USER}>`,
+//         to: receiver,
+//         subject: "You are invited to a new event!",
+//         text: `
+//         Dear ${firstname},
+//         I am glad to invite you to join the ${eventname} event at ${location} on ${formattedDate}.
+//         Please confirm your presence to the event by clicking on the link: ${confirmationLink}`,
+//       },
+//       (error, info) => {
+//         if (error) {
+//           console.error("Error occurred:", error.message);
+//         } else {
+//           console.log("Email sent:", info.response);
+//         }
+//       }
+//     );
+//     console.log(info);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
+
+// router.get("/send-email/:id", eventMustExist, async function (req, res, next) {
+//   const { id } = req.params;
+//   try {
+//     const results =
+//       await db(`SELECT e.eventname, e.location, e.date, f.firstname, f.email, f.confirmed 
+//     FROM eventlist AS e 
+//     LEFT JOIN friendlist AS f ON e.id = f.eventid 
+//     WHERE e.id = ${id} AND confirmed = 0;`);
+
+//     results.data.forEach(({ email, eventname, location, date, firstname }) => {
+//       sendEmail(email, id, eventname, location, date, firstname);
+//     });
+
+//     res.status(200).send("Emails sent successfully!");
+//   } catch (err) {
+//     res.status(500).send(err);
+//   }
+// });
+
+
+// Postman Test = OK (http://localhost:4000/api/games)
+// router.post("/", userShouldBeLoggedIn, async (req, res, next) => {
+//   const userId = req.userId; // User ID extracted from the token
+//   const { emails } = req.body; // Remove username
+
+//   try {
+//       // Call external API to fetch solution
+//       const apiResponse = await axios.get(`https://random-word-api.vercel.app/api?words=1&type=capitalized`);
+//       const solution = apiResponse.data[0]; // Assuming the API response is an array of words, and we extract the first one
+
+//       // Create a new game with the provided solution
+//       const game = await models.Game.create({ solution, userId });
+
+//         // Create participation records for each email.
+//         // We expect an array of emails in the request body instead of a single email.
+//         // We iterate over each email in the emails array using Array.map() and create a participation record for each email.
+//         // We use Promise.all() to asynchronously create all participation records and wait for all promises to resolve.
+//         await Promise.all(emails.map(async (email) => {
+//           let participantUserId = null; // Initialize participantUserId as null
+
+//           // Check if the user with the provided email exists
+//           // If a user exists, we set the userId for the participation record; otherwise, it remains null.
+//           const user = await models.User.findOne({ where: { email } });
+//           if (user) {
+//               participantUserId = user.id; // Set participantUserId if user exists
+//           }
+//           // Create a new participation record
+//           return models.Participation.create({ userId: participantUserId, gameId: game.id, email });
+//       }));
+
+//       res.send(game);
+//   } catch (error) {
+//       res.status(500).send(error);
+//   }
+// });
 
       // const apiResponse = await axios.get(`https://random-word-api.vercel.app/api?words=1&type=capitalized=${process.env.API_KEY}&${query}`);
       // const solution = apiResponse.data.solution; // Assuming the API response contains a solution

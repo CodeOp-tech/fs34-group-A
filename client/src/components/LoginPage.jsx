@@ -1,12 +1,48 @@
-import React from 'react'
+import React, { useState } from 'react';
+import axios from 'axios';
+import useAuth from '../hooks/useAuth';
+import { useNavigate } from 'react-router-dom'; // Import the useNavigate hook
 
-const LoginPage = () => {
+function LoginPage() {
+  const { isLoggedIn, signIn } = useAuth();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate(); // Initialize the navigate function
+
+  const handleUsernameChange = (e) => {
+    setUsername(e.target.value);
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post('/api/users/login', {
+        username,
+        password,
+      });
+
+      console.log(response.data);
+
+      signIn();
+
+      // Redirect to the profile page after successful login
+      navigate('/profilepage');
+    } catch (error) {
+      console.error('Error during login:', error);
+    }
+  };
+
   return (
     <div className="bg-gray-200 h-screen flex items-center justify-center">
       <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
         <h2 className="text-2xl font-semibold mb-6">Login</h2>
 
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label htmlFor="username" className="block text-gray-600 text-sm font-medium mb-2">
               Username
@@ -15,19 +51,8 @@ const LoginPage = () => {
               type="text"
               id="username"
               name="username"
-              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-indigo-500"
-              required
-            />
-          </div>
-
-          <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-600 text-sm font-medium mb-2">
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
+              value={username}
+              onChange={handleUsernameChange}
               className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-indigo-500"
               required
             />
@@ -41,6 +66,8 @@ const LoginPage = () => {
               type="password"
               id="password"
               name="password"
+              value={password}
+              onChange={handlePasswordChange}
               className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-indigo-500"
               required
             />
@@ -56,6 +83,6 @@ const LoginPage = () => {
       </div>
     </div>
   );
-};
+}
 
 export default LoginPage;

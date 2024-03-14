@@ -10,7 +10,8 @@ const WordQuest = () => {
   const [attemptsLeft, setAttemptsLeft] = useState(3); //number of total attempts 
   const [result, setResult] = useState('');
   const [participatedGames, setParticipatedGames] = useState([]); //to store participatedGame IDs
-  
+  const [userPoints, setUserPoints] = useState(0); //to keep track of user points
+
 //******************************************************************************************************************** */
  
  // IT WORKS 
@@ -66,7 +67,11 @@ const handleGuessSubmit = () => {
     // if it matches display congrats
     // if not you failed
     if (guessedWord.toLowerCase() === currentWord) {
+      //adding pointing system depending on attempts
       setResult(`Well done, you guessed the word: ${currentWord}!`);
+      const pointsEarned =
+        attemptsLeft === 3 ? 10 : attemptsLeft === 2 ? 5 : attemptsLeft === 1 ? 1 : 0;
+      setUserPoints(userPoints + pointsEarned); // Add points to user
     } else {
       // also if the guessed word does not match the actual word i have one attempt less
       //i need to DECREASE the number of attempts left by 1 each time
@@ -121,6 +126,7 @@ const handleGuessSubmit = () => {
   //********************************************************************************************************* */
 
  // PARTECIPATION OF USER'S IN GAME - NOT PLAY THE SAME GAME TWICE
+ //not sure about this - CHECK!!
 
 // one endpoint in the backend - check partecipation for each game (for example: have i played game 17 already?)
 // need to be able to send a response to the backend - use useEffect like Germinal suggested
@@ -172,6 +178,7 @@ useEffect(() => {
         />
         <button onClick={handleGuessSubmit}>Submit Guess</button>
         <p>{result}</p>
+        <p>Your Points: {userPoints}</p> {/* Display user points */}
       </div>
     </div>
   );

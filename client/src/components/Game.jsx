@@ -9,9 +9,7 @@ const WordQuest = () => {
   const [maskedWord, setMaskedWord] = useState('');
   const [attemptsLeft, setAttemptsLeft] = useState(3); //number of total attempts 
   const [result, setResult] = useState('');
-  const [nextGameTime, setNextGameTime] = useState('');
-  const [gameAvailable, setGameAvailable] = useState(true);
-
+  const [participatedGames, setParticipatedGames] = useState([]); //to store participatedGame IDs
   
 //******************************************************************************************************************** */
  
@@ -75,7 +73,7 @@ const handleGuessSubmit = () => {
       // after the last attempt then i should display the try again tomorrow message
       setAttemptsLeft(attemptsLeft - 1);
       if (attemptsLeft === 1) {
-        setResult(`You failed! The word was: ${currentWord}. Try again tomorrow.`);
+        setResult(`You failed! The word was: ${currentWord}.`);
       } else {
         // but if i have attempts left then i need to call another function
         // i want to be able to reveal a new letter after each attempt
@@ -92,7 +90,6 @@ const handleGuessSubmit = () => {
   //******************************************************************************************************** */
 
   // FUNCTION FOR NEXT LETTER
-  //difficult - does not work as i want to
 
   const revealNextLetter = (word) => {
     // like before, i need to split the maskedword and create a new arr
@@ -123,6 +120,41 @@ const handleGuessSubmit = () => {
 
   //********************************************************************************************************* */
 
+ // PARTECIPATION OF USER'S IN GAME - NOT PLAY THE SAME GAME TWICE
+
+// one endpoint in the backend - check partecipation for each game (for example: have i played game 17 already?)
+// need to be able to send a response to the backend - use useEffect like Germinal suggested
+// with this the user cant play the same gamme twice - this happens by checking the users partecipation status for each game
+//if the user attempts to play a game they already played, a mex will show instead of adding the gameID to the participatedGames state
+
+// does this work?
+
+useEffect(() => {
+  //check participation status for each game
+  const checkParticipation = async (gameId) => {
+    try {
+      const response = await axios.get(`/:id/${gameId}`);
+      if (response.data.message === "yes") {
+        //if the user has participated in this game, display a message
+        console.log(`You have already played game ${gameId}.`);
+      } else {
+        //if the user hasn't participated in this game, add gameId to participatedGames
+        setParticipatedGames(prevParticipatedGames => [...prevParticipatedGames, gameId]);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  //check participation for each game in the words array
+  words.forEach((_, index) => {
+    checkParticipation(index);
+  });
+}, [words]); //trigger useEffect when the words change
+
+
+  //********************************************************************************************************* */
+
+
   // RETURN STATEMENT
 
 
@@ -139,7 +171,6 @@ const handleGuessSubmit = () => {
           placeholder="Enter the word"
         />
         <button onClick={handleGuessSubmit}>Submit Guess</button>
-     
         <p>{result}</p>
       </div>
     </div>

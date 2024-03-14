@@ -108,8 +108,8 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-async function sendEmail(email) {
-  let joiningLink = 'http://yourhomepage.com'; // Replace 'http://yourhomepage.com' with your actual homepage URL
+async function sendEmail(email, gameId) {
+  let joiningLink = `http://yourhomepage.com${gameId}`; // Send them to the gameId, front end logic for authentication will redirect them to the game
   const invitation = {
     from: `<${EMAIL_USER}>`, ///this 
     to: email,
@@ -153,7 +153,7 @@ router.post("/", userShouldBeLoggedIn, async (req, res, next) => {
           }
 
           //send email 
-          await sendEmail(email);
+          await sendEmail(email, game.id);
           // Create a new participation record
           return models.Participation.create({ userId: participantUserId, gameId: game.id, email });
       }));

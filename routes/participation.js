@@ -23,6 +23,35 @@ router.get("/", userShouldBeLoggedIn, async (req, res, next) => {
       }
 });
 
+// get request to see if the game has been played or not
+// the "/:id" is the Game ID
+router.get("/:id", userShouldBeLoggedIn, async (req, res, next) => {
+  const gameId = req.params.id;
+  const userId = req.userId; // Assuming you have user information attached to the request
+  
+  try {
+    const participation = await models.Participation.findOne({
+      where: {
+        gameId: gameId,
+        userId: userId
+      }
+    });
+
+    if (participation) {
+      if(participation.completedAt !== null){
+      res.send({ message: "yes" });
+    } else {
+      res.send({ message: "no" });
+    }
+    } else {
+      res.send({ message: "not found" });
+    }
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+
 //  to create an endpoint to update a participant's play information
 // Postman Test = OK (http://localhost:4000/:id/play)
 router.put('/:id/play', userShouldBeLoggedIn, async (req, res) => {

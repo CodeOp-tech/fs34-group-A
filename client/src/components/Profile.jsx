@@ -6,8 +6,8 @@ import axios from 'axios';//
   1. Need a "Create Group" button, so when clicked : 
       (a) Input Containers to Add Email Address (Add email buttons)
       (b) Send Invitation button like a handlesubmit button, so when clicked: 
-          - Sends a post request to endpoint=>  router.post("/", userShouldBeLoggedIn, async (req, res, next).
-          - Sends out email invitations.
+          - Sends a post request to endpoint=>  router.post("/", userShouldBeLoggedIn, async (req, res, next). & send invitation also!
+
 
 */
 

@@ -10,6 +10,8 @@ const models = require("../models");
 const axios = require('axios'); //
 const userShouldBeLoggedIn = require("../guards/userShouldBeLoggedIn") //
 const { User } = require('../models');
+const EMAIL_USER = process.env.EMAIL_USER;//
+const EMAIL_PASS = process.env.EMAIL_PASS;//
 const nodemailer = require('nodemailer');
 
 
@@ -94,6 +96,35 @@ router.get("/:id", userShouldBeLoggedIn, async (req, res, next) => {
         - Multiple participation records are created in parallel using Promise.all() to handle asynchronous creation.
 */
 
+
+
+const transporter = nodemailer.createTransport({
+  service: "Gmail",
+  host: "smtp.gmail.com",
+  port: 465,
+  auth: {
+    user: EMAIL_USER,  //how is the .env file supposed to look
+    pass: EMAIL_PASS, /// this
+  },
+});
+
+async function sendEmail(email) {
+  let joiningLink = 'http://yourhomepage.com'; // Replace 'http://yourhomepage.com' with your actual homepage URL
+  const invitation = {
+    from: `<${EMAIL_USER}>`, ///this 
+    to: email,
+    subject: 'You are invited to a new game!',
+    text: `I am glad to invite you to join the WordQuest game. Join the game by clicking on the link: ${joiningLink}`,
+  };
+  try {
+    const info = await transporter.sendMail(invitation);
+    console.log({ message :'Email sent!', response: info.response});
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
 // Postman Test = OK (http://localhost:4000/api/games)
 router.post("/", userShouldBeLoggedIn, async (req, res, next) => {
   const userId = req.userId; // User ID extracted from the token
@@ -122,7 +153,7 @@ router.post("/", userShouldBeLoggedIn, async (req, res, next) => {
           }
 
           //send email 
- //         sendEmail(email)
+          await sendEmail(email);
           // Create a new participation record
           return models.Participation.create({ userId: participantUserId, gameId: game.id, email });
       }));
@@ -133,58 +164,7 @@ router.post("/", userShouldBeLoggedIn, async (req, res, next) => {
   }
 });
 
-// function sendEmail(receiver, eventid, eventname, location, date, firstname) {
-//   let confirmationLink = `http://localhost:5173/events/${eventid}/confirm?email=${receiver}`;
-//   const formattedDate = new Date(date).toLocaleString("en-US", {
-//     dateStyle: "short",
-//     timeStyle: "short",
-//   });
-//   try {
-//     const info = transporter.sendMail(
-//       {
-//         from: `Arianne Napa <${EMAIL_USER}>`,
-//         to: receiver,
-//         subject: "You are invited to a new event!",
-//         text: `
-//         Dear ${firstname},
-//         I am glad to invite you to join the ${eventname} event at ${location} on ${formattedDate}.
-//         Please confirm your presence to the event by clicking on the link: ${confirmationLink}`,
-//       },
-//       (error, info) => {
-//         if (error) {
-//           console.error("Error occurred:", error.message);
-//         } else {
-//           console.log("Email sent:", info.response);
-//         }
-//       }
-//     );
-//     console.log(info);
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
-
-// router.get("/send-email/:id", eventMustExist, async function (req, res, next) {
-//   const { id } = req.params;
-//   try {
-//     const results =
-//       await db(`SELECT e.eventname, e.location, e.date, f.firstname, f.email, f.confirmed 
-//     FROM eventlist AS e 
-//     LEFT JOIN friendlist AS f ON e.id = f.eventid 
-//     WHERE e.id = ${id} AND confirmed = 0;`);
-
-//     results.data.forEach(({ email, eventname, location, date, firstname }) => {
-//       sendEmail(email, id, eventname, location, date, firstname);
-//     });
-
-//     res.status(200).send("Emails sent successfully!");
-//   } catch (err) {
-//     res.status(500).send(err);
-//   }
-// });
-
-
-// Postman Test = OK (http://localhost:4000/api/games)
+//Postman Test = OK (http://localhost:4000/api/games)
 // router.post("/", userShouldBeLoggedIn, async (req, res, next) => {
 //   const userId = req.userId; // User ID extracted from the token
 //   const { emails } = req.body; // Remove username

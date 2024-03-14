@@ -10,6 +10,7 @@ var router = express.Router();
 const models = require("../models");
 const userShouldBeLoggedIn = require("../guards/userShouldBeLoggedIn");
 const { User } = require('../models');
+const { Game } = require('../models');
 
 
 // Postman Test = OK (http://localhost:4000/api/participation)
@@ -23,41 +24,37 @@ router.get("/", userShouldBeLoggedIn, async (req, res, next) => {
 });
 
 //  to create an endpoint to update a participant's play information
-router.put('/participation/:id/play', userShouldBeLoggedIn, async (req, res) => {
+// Postman Test = OK (http://localhost:4000/:id/play)
+router.put('/:id/play', userShouldBeLoggedIn, async (req, res) => {
   const { id } = req.params;
   const { score, completedAt } = req.body;
 
   try {
     // Find the participant with the specified ID and include the associated Game with userId check
-    const participant = await models.Participation.findOne({
+    const participation = await models.Participation.findOne({
       where: {
         id,
       },
       include: {
         model: Game,
         where: {
-          userId: req.userID,
+          userId: req.userId,
         },
       },
     });
 
-    await participant.update({ score, completedAt });
-
-    // Check if the participant is found
-    if (!participant) {
-      return res.status(404).send({ message: 'Participant not found' });
-    }
-
     // Update the participant's score and completion date
-    await participant.update({ score, completedAt });
+    await participation.update({ score, completedAt });
 
-    res.send(participant);
+    res.send(participation);
   } catch (err) {
     console.error('Error updating participation:', err);
-    res.status(500).send({ message: 'Internal Server Error' });
+    res.status(500).send(err);
   }
 });
+
  
+
 /*   shrudhi
     This route updates the userId for new players.
 */

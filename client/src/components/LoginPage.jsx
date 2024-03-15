@@ -59,36 +59,16 @@ function LoginPage() {
     setShowRegistration(!showRegistration);
   };
  
-  // useEffect(() => {
-  //   // If the user is logged in, navigate to the profile page
-  //   if (isLoggedIn) {
-  //     navigate('/profilepage');
-  //   } else {
-  //     // If the user is logged out, navigate to the home page
-  //     navigate('/');
-  //   }
-  // }, [isLoggedIn, navigate]);
-
-  // const handleLogout = () => {
-  //   // Clear authentication state
-  //   signOut();
-    
-  //   // Remove isLoggedIn flag from local storage
-  //   localStorage.removeItem('isLoggedIn');
-  
-  //   // Redirect to home page
-  //   navigate('/');
-  // };
 
   const handleLogout = () => {
     // Clear authentication state
     signOut();
-     // Redirect to home page
-     navigate('/');
     
     // Set a flag in local storage indicating that the user has logged out
     localStorage.setItem('isLoggedIn', 'false');
   
+     // Redirect to home page
+     navigate('/');
    
   };
 

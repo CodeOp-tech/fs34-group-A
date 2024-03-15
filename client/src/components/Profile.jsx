@@ -107,8 +107,8 @@ const ProfilePage = () => {
 
   
   return (
-    <div className="bg-gray-200 h-screen flex items-center justify-center">
-      <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
+    <div className="flex items-center justify-center">
+    <div className="bg-white p-8 rounded shadow-md max-w-md">
         <h2 className="text-2xl font-semibold mb-6">Profile</h2>
 
         {/* Create Group Section */}

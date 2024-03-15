@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
 import NavBar from './components/NavBar';
 import LoginPage from './components/LoginPage';
 import Profile from './components/Profile';
@@ -12,6 +12,8 @@ import AuthContext from './context/AuthContext';
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const navigate = useNavigate ()
   
   function signIn() {
     setIsLoggedIn(true);
@@ -19,6 +21,7 @@ export default function App() {
 
   function signOut() {
     setIsLoggedIn(false);
+    navigate("/")
   }
 
   const authObject = {
@@ -37,7 +40,7 @@ export default function App() {
         <div className="container mx-auto">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/gamepage" element={<GamePage />} />
+            <Route path="/gamepage/:id" element={<GamePage />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/profilepage" element={<ProfilePage />} />
             <Route path="/game" element={<Game />} /> 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import useAuth from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
-import { IoMdEye, IoMdEyeOff } from 'react-icons/io';
+
 
 
 function LoginPage() {
@@ -76,18 +76,19 @@ function LoginPage() {
 
 
   return (
-    <div className="bg-gray-200 h-screen flex items-center justify-center">
-      <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-semibold mb-6">{showRegistration ? 'Sign Up' : 'Sign In'}</h2>
+    <div className="bg-gray-900 h-screen flex items-center justify-center">
+      <div className="p-20 rounded shadow-[0_0_20px_theme('colors.pink.600')] w-full max-w-md">
+        <h2 className="text-2xl font-semibold mb-9 bg-gradient-to-r from-pink-500 to-purple-500 text-transparent bg-clip-text">{showRegistration ? 'Sign Up' : 'Sign In'}</h2>
 
         <form onSubmit={handleSubmit}>
           {showRegistration && (
             <div className="mb-4">
               <label htmlFor="email" className="block text-gray-600 text-sm font-medium mb-2">
-                Email
+                
               </label>
               <input
                 type="email"
+                placeholder='email'
                 id="email"
                 name="email"
                 value={email}
@@ -100,10 +101,11 @@ function LoginPage() {
 
           <div className="mb-4">
             <label htmlFor="username" className="block text-gray-600 text-sm font-medium mb-2">
-              Username
+             
             </label>
             <input
               type="text"
+              placeholder='username'
               id="username"
               name="username"
               value={username}
@@ -115,11 +117,12 @@ function LoginPage() {
 
           <div className="mb-4 relative">
             <label htmlFor="password" className="block text-gray-600 text-sm font-medium mb-2">
-              Password
+             
             </label>
             <div className="flex items-center">
               <input
                 type={showPassword ? 'text' : 'password'}
+                placeholder="password"
                 id="password"
                 name="password"
                 value={password}
@@ -131,7 +134,7 @@ function LoginPage() {
                 className="absolute top-0 right-0 mt-2 mr-2 cursor-pointer"
                 onClick={handleShowPasswordToggle}
               >
-                {showPassword ? <IoMdEyeOff /> : <IoMdEye />}
+                {showPassword ? 'Hide Password 🔒' : 'Show Password 🔓'}
               </span>
             </div>
           </div>

@@ -107,13 +107,13 @@ const ProfilePage = () => {
 
   
   return (
-    <div className="flex items-center justify-center">
-    <div className="bg-white p-8 rounded shadow-md max-w-md">
-        <h2 className="text-2xl font-semibold mb-6">Profile</h2>
+    <div className="h-lg flex items-center justify-center">
+    <div className="w-full max-w-md">
+        <h2 className="text-2xl font-semibold mb-9 bg-gradient-to-r from-pink-500 to-purple-500 text-transparent bg-clip-text">Profile</h2>
 
         {/* Create Group Section */}
         <div className="mb-4">
-        <h3 className="text-lg font-semibold mb-2">Create Group</h3>
+        <h3 className="text-lg font-semibold mb-2 text-white">Create Group</h3>
         {!groupCreated && (
         <div>
           <button onClick={() => setGroupCreated(true)} className="bg-blue-500 text-white px-4 py-2 rounded focus:outline-none focus:bg-blue-600">
@@ -142,7 +142,7 @@ const ProfilePage = () => {
 
         {/* My Invitations Section */}
         <div className="mb-4">
-          <h3 className="text-lg font-semibold mb-2">My Invitations</h3>
+          <h3 className="text-lg font-semibold mb-2 text-white">My Invitations</h3>
           {invitations.map(invitation => (
             <div key={invitation.id} className="flex items-center justify-between border-b border-gray-300 py-2">
               <span>{invitation.gameName}</span>
@@ -159,28 +159,16 @@ const ProfilePage = () => {
         {/* Other Profile Content */}
         <form>
           <div className="mb-4">
-            <label htmlFor="username" className="block text-gray-600 text-sm font-medium mb-2">
+            <label htmlFor="username" className="block text-white text-sm font-medium mb-2">
               Quests played
             </label>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-indigo-500"
-              required
-            />
+         
           </div>
           <div className="mb-4">
-            <label htmlFor="username" className="block text-gray-600 text-sm font-medium mb-2">
+            <label htmlFor="username" className="block text-white text-sm font-medium mb-2">
               Score
             </label>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-indigo-500"
-              required
-            />
+        
           </div>
         </form>
       </div>

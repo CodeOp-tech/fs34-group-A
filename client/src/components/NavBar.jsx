@@ -32,13 +32,10 @@ export default function NavBar() {
           <div className="space-x-4">
             {isLoggedIn && (
               <>
-                <Link to="/profilepage" className="text-white hover:text-pink-500">
-                  Profile Page
-                </Link>
                 <Link to="/profile" className="text-white hover:text-pink-500">
                   Profile
                 </Link>
-                <Link to="/gamepage" className="text-white hover:text-pink-500">
+                <Link to="/gamepage/:id" className="text-white hover:text-pink-500">
                   Game
                 </Link>
                 <button
@@ -52,8 +49,6 @@ export default function NavBar() {
 
             {!isLoggedIn && (
               <>
-               
-
                 <Link to="/login" className="px-8 py-3 relative before:absolute before:w-2/3 before:h-2/3 before:top-0 before:left-0 before:border-t before:border-l before:border-pink before:border-solid after:absolute after:w-2/3 after:h-2/3 after:right-0 after:bottom-0 after:border-b after:border-r after:border-pink after:border-solid hover:after:w-full hover:after:h-full hover:before:w-full hover:before:h-full before:duration-300 after:duration-300 text-grey-500 hover:text-white">
                   Sign In | Sign Up
                 </Link>

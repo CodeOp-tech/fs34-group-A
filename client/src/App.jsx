@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
 import NavBar from './components/NavBar';
 import LoginPage from './components/LoginPage';
-import Profile from './components/Profile';
+
 import Game from './components/Game';
 import LoadingSpinner from './components/LoadingSpinner';
 import Home from './pages/Home';
@@ -47,7 +47,7 @@ export default function App() {
   
     return (
       <AuthContext.Provider value={authObject}>
-        <div className="bg-gray-500 min-w-screen min-h-screen items-center justify-center">
+        <div className="bg-gray-900 min-w-screen min-h-screen items-center justify-center">
           <div className="text-center">
             <NavBar />
             {isLoading ? ( // Conditionally render loading spinner
@@ -57,7 +57,6 @@ export default function App() {
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/gamepage/:id" element={<GamePage />} />
-                  <Route path="/profile" element={<Profile />} />
                   <Route path="/profilepage" element={<ProfilePage />} />
                   <Route path="/game" element={<Game />} />
                   <Route path="/login" element={<LoginPage />} />

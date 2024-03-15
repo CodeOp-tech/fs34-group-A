@@ -165,9 +165,9 @@ useEffect(() => {
 
 
   return (
-    <div className="flex items-center justify-center h-screen">
-      <div className="bg-white p-8 rounded shadow-md max-w-md">
-        <h2 className="text-2xl font-semibold mb-6">WordQuest</h2>
+    <div className="flex items-center justify-center">
+    <div className="bg-white p-8 rounded shadow-md max-w-md">
+     
         <p>Today's Word: {maskedWord}</p>
         <p>Attempts Left: {attemptsLeft}</p>
         <input

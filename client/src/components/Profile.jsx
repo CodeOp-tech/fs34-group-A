@@ -44,29 +44,29 @@ const ProfilePage = () => {
 */
     useEffect(() => {
     // Fetch invitations when the component mounts
-    fetchInvitations();
-  }, []);
-
-  const fetchInvitations = async () => {
-    try {
-      const token = localStorage.getItem('token');// Retrieve token from local storage        
-      if (!token) {// Check if token exists
-        throw new Error('Token not found in local storage.');
-      }
-  
-      const userId = decoded(token);// Decode the token to get the user ID  
-      const config = {// Attach token to request headers
-        headers: {
-          Authorization: `Bearer ${token}`
+    const fetchInvitations = async () => {
+      try {
+        const token = localStorage.getItem('token');// Retrieve token from local storage        
+        if (!token) {// Check if token exists
+          throw new Error('Token not found in local storage.');
         }
-      };
-        
-      const response = await axios.get(`/api/${userId}/games`, config);// Fetch invitations using the user ID from the token
-      setInvitations(response.data);// Update state with invitations data
-    } catch (error) {// Handle errors
-      console.error('Error fetching invitations.', error);
-    }
-  };
+    
+        //const userId = decode(token);// Decode the token to get the user ID  
+        const config = {// Attach token to request headers
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        };
+          
+        const response = await axios.get(`/api/participation/invitations`, config);// Fetch invitations using the user ID from the token
+        setInvitations(response.data);// Update state with invitations data
+      } catch (error) {// Handle errors
+        console.error('Error fetching invitations.', error.message);
+      }
+    };
+
+    fetchInvitations();// Call the fetch function when component mounts
+  }, []);// Empty dependency array ensures the effect runs only once
 
   const handleJoinGame = (gameId) => { //Event handler for when the "Join Game" button is clicked
     navigate(`/game/${gameId}`);// Redirect to the game/:id page using navigate//tbc
@@ -101,7 +101,7 @@ const ProfilePage = () => {
       console.log(response.data);
       setGroupCreated(true);
     } catch (error) {
-      setError(error.response.data.message);
+      console.error(error.response.data.message);
     }
   };
 
@@ -113,12 +113,14 @@ const ProfilePage = () => {
 
         {/* Create Group Section */}
         <div className="mb-4">
-          <button
-            onClick={() => setGroupCreated(true)}
-            className="bg-blue-500 text-white px-4 py-2 rounded focus:outline-none focus:bg-blue-600">
-
+        <h3 className="text-lg font-semibold mb-2">Create Group</h3>
+        {!groupCreated && (
+        <div>
+          <button onClick={() => setGroupCreated(true)} className="bg-blue-500 text-white px-4 py-2 rounded focus:outline-none focus:bg-blue-600">
             Create Group
           </button>
+        </div>
+      )}
           {groupCreated && (
             <form onSubmit={handleSubmit}>
               {emails.map((email, index) => (
@@ -134,28 +136,25 @@ const ProfilePage = () => {
               <button type="button" onClick={handleAddEmail}className="mt-2 bg-green-500 text-white px-4 py-2 rounded focus:outline-none"> Add Email </button>
 
               <button type="submit"className="mt-4 bg-blue-500 text-white px-4 py-2 rounded focus:outline-none focus:bg-blue-600">Send Invitation</button>
-
-              {error && <p className="text-red-500 mt-2">{error}</p>}
             </form>
           )}
         </div>
 
         {/* My Invitations Section */}
-      <div className="mb-4">
-        <h3 className="text-lg font-semibold mb-2">My Invitations</h3>
-        {invitations.map(invitation => (
-          <div key={invitation.id} className="flex items-center justify-between border-b border-gray-300 py-2">
-            <span>{invitation.gameName}</span>
-            <button 
-              onClick={() => handleJoinGame(invitation.gameId)}
-              className="bg-blue-500 text-white px-4 py-2 rounded focus:outline-none hover:bg-blue-600"
-            >
-              Join Game
-            </button>
-          </div>
-        ))}
-      </div>
-
+        <div className="mb-4">
+          <h3 className="text-lg font-semibold mb-2">My Invitations</h3>
+          {invitations.map(invitation => (
+            <div key={invitation.id} className="flex items-center justify-between border-b border-gray-300 py-2">
+              <span>{invitation.gameName}</span>
+              <button 
+                onClick={() => handleJoinGame(invitation.gameId)}
+                className="bg-blue-500 text-white px-4 py-2 rounded focus:outline-none hover:bg-blue-600"
+              >
+                Join Game
+              </button>
+            </div>
+          ))}
+        </div>
 
         {/* Other Profile Content */}
         <form>
@@ -190,41 +189,3 @@ const ProfilePage = () => {
 };
 
 export default ProfilePage;
-
-/*
-    <div className="bg-gray-200 h-screen flex items-center justify-center">
-      <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-semibold mb-6">Profile</h2>
-
-        <form>
-          <div className="mb-4">
-            <label htmlFor="username" className="block text-gray-600 text-sm font-medium mb-2">
-              Quests played
-            </label>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-indigo-500"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="username" className="block text-gray-600 text-sm font-medium mb-2">
-              Score
-            </label>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-indigo-500"
-              required
-            />
-          </div>
-         
-        </form>
-      </div>
-      </div>
-  );
-};
-*/

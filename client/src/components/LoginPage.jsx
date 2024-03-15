@@ -47,6 +47,7 @@ function LoginPage() {
         signIn();
         // Set isLoggedIn flag in local storage
         localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('token', response.data.token);
         // Navigate to profile page after successful login
         navigate('/profilepage');
       }

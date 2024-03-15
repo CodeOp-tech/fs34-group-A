@@ -154,7 +154,7 @@ router.post("/", userShouldBeLoggedIn, async (req, res, next) => {
           }
 
           //send email 
-          await sendEmail(email, game.id);
+          //await sendEmail(email, game.id);
           // Create a new participation record
           return models.Participation.create({ userId: participantUserId, gameId: game.id, email });
       }));

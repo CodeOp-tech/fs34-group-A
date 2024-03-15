@@ -23,6 +23,30 @@ router.get("/", userShouldBeLoggedIn, async (req, res, next) => {
       }
 });
 
+
+// Postman Test = OK (http://localhost:4000/api/participation/1/games)
+// This is to filter the games which have not been played yet. 
+// We retrieve the participation table based on userId and filter the rows where completedAt =null and fetch the gameIds.
+router.get("/:userId/games", userShouldBeLoggedIn, async (req, res, next) => {
+  const userId = req.params.userId;
+
+  try {
+    const games = await models.Game.findAll({
+      include: {
+        model: models.Participation,
+        where: {
+          userId: userId,
+          completedAt: null,
+        },
+      },
+    });
+
+    res.send(games);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
 // get request to see if the game has been played or not
 // the "/:id" is the Game ID
 router.get("/:id", userShouldBeLoggedIn, async (req, res, next) => {

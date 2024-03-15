@@ -102,6 +102,7 @@ const transporter = nodemailer.createTransport({
   service: "Gmail",
   host: "smtp.gmail.com",
   port: 465,
+  secure: true,
   auth: {
     user: EMAIL_USER,  //how is the .env file supposed to look
     pass: EMAIL_PASS, /// this
@@ -117,7 +118,7 @@ async function sendEmail(email, gameId) {
     text: `I am glad to invite you to join the WordQuest game. Join the game by clicking on the link: ${joiningLink}`,
   };
   try {
-    const info = await transporter.sendMail(invitation);
+    const info = await transporter.sendMail(invitation); ///CHECK!!!
     console.log({ message :'Email sent!', response: info.response});
   } catch (error) {
     console.error(error);

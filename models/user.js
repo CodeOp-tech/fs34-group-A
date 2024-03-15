@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       // belongsMa
       User.belongsToMany(models.Game, { through: models.Participation, foreignKey: 'userId',
         as: 'rounds' });
+        User.hasMany(models.Participation, {foreignKey: 'userId'});  
     }
   }
   User.init({

@@ -182,7 +182,7 @@ useEffect(() => {
         />
         <button onClick={handleGuessSubmit}>Submit Guess</button>
         <p>{result}</p>
-        <p>Guessed: {guesses.join(', ')}</p>
+        {guesses.length > 0 && <p>Guessed: {guesses.join(', ')}</p>}
         <p>Your Points: {userPoints}</p>
       </div>
     </div>

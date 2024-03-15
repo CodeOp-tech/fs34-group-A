@@ -11,6 +11,7 @@ const WordQuest = () => {
   const [result, setResult] = useState('');
   const [participatedGames, setParticipatedGames] = useState([]); //to store participatedGame IDs
   const [userPoints, setUserPoints] = useState(0); //to keep track of user points
+  const [guesses, setGuesses] = useState([]); // State to store guessed words
 
 //******************************************************************************************************************** */
  
@@ -85,12 +86,16 @@ const handleGuessSubmit = () => {
         revealNextLetter(currentWord);
       }
     }
+     //store the guessed word
+     setGuesses([...guesses, guessedWord]);
+     setGuessedWord(''); // Clear the input field after each guess
   };
 
-
-
-  // with the styling: we need to show the currentWord either bold or another colour
-  // how to do this?
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      handleGuessSubmit();
+    }
+  };
 
   //******************************************************************************************************** */
 
@@ -163,24 +168,25 @@ useEffect(() => {
 
   // RETURN STATEMENT
 
-
   return (
     <div className="flex items-center justify-center">
-    <div className="bg-white p-8 rounded shadow-md max-w-md">
-     
-        <p>Today's Word: {maskedWord}</p>
+      <div className="bg-white p-8 rounded shadow-md max-w-md">
+        <p>Guess Word: {maskedWord.split('').join(' ')}</p>
         <p>Attempts Left: {attemptsLeft}</p>
         <input
           type="text"
           value={guessedWord}
           onChange={(e) => setGuessedWord(e.target.value)}
+          onKeyPress={handleKeyPress} 
           placeholder="Enter the word"
         />
         <button onClick={handleGuessSubmit}>Submit Guess</button>
         <p>{result}</p>
-        <p>Your Points: {userPoints}</p> {/* Display user points */}
+        <p>Guessed: {guesses.join(', ')}</p>
+        <p>Your Points: {userPoints}</p>
       </div>
     </div>
   );
 };
+
 export default WordQuest;

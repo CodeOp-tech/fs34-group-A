@@ -27,21 +27,41 @@ router.get("/", userShouldBeLoggedIn, async (req, res, next) => {
 // Postman Test = OK (http://localhost:4000/api/participation/1/games)
 // This is to filter the games which have not been played yet. 
 // We retrieve the participation table based on userId and filter the rows where completedAt =null and fetch the gameIds.
-router.get("/:userId/games", userShouldBeLoggedIn, async (req, res, next) => {
-  const userId = req.params.userId;
+// router.get("/invitations", userShouldBeLoggedIn, async (req, res, next) => {
+//   const userId = req.userId; 
+
+//   try {
+//     const games = await models.Game.findAll({
+//       include: {
+//         model: models.Participation,
+//         where: {
+//           userId: userId,
+//           completedAt: null,
+//         },
+//       },
+//     });
+
+//     res.send(games);
+//   } catch (error) {
+//     res.status(500).send(error);
+//   }
+// });
+
+router.get("/invitations", userShouldBeLoggedIn, async (req, res, next) => {
+  const userId = req.userId; 
 
   try {
-    const games = await models.Game.findAll({
-      include: {
-        model: models.Participation,
-        where: {
-          userId: userId,
-          completedAt: null,
-        },
+    const invitations = await models.Participation.findAll({
+      where: {
+        userId: userId,
+        completedAt: null, // Assuming completedAt signifies if the invitation is pending or accepted
       },
+      include: {
+        model: models.Game // Optionally include the game details associated with the invitation
+      }
     });
 
-    res.send(games);
+    res.send(invitations);
   } catch (error) {
     res.status(500).send(error);
   }

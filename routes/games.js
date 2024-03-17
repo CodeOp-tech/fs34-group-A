@@ -42,19 +42,37 @@ router.get("/", userShouldBeLoggedIn, async (req, res, next) => {
 
 //This finds a game based on game Id (not sure if needed)
 // Postman Test = OK (http://localhost:4000/api/games/1)
+// router.get("/:id", userShouldBeLoggedIn, async (req, res, next) => {
+//     const { id } = req.params;
+//     try {
+//         const games = await models.Game.findOne({
+//             where: {
+//               id,
+//             },
+//         });
+//         res.send(games);
+//       } catch (error) {
+//         res.status(500).send(error);
+//       }
+// });
+// Postman Test = OK (http://localhost:4000/api/games/30)
 router.get("/:id", userShouldBeLoggedIn, async (req, res, next) => {
-    const { id } = req.params;
-    try {
-        const games = await models.Game.findOne({
-            where: {
-              id,
-            },
-        });
-        res.send(games);
-      } catch (error) {
-        res.status(500).send(error);
-      }
+  const { id } = req.params;
+  try {
+    const game = await models.Game.findOne({
+      where: {
+        id,
+      },
+      include: models.User // Include the User model to fetch the user's information
+    });
+
+    res.send(game);
+  } catch (error) {
+    res.status(500).send(error);
+  }
 });
+
+
 
 // create a new game for this participant by id. need to check name or if username/puzzle name. 
 // use token

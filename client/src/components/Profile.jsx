@@ -28,6 +28,8 @@ const ProfilePage = () => {
   const [emails, setEmails] = useState(['']); // State to store email addresses
   const [invitations, setInvitations] = useState([]);
   const navigate = useNavigate(); // Initialize the navigate function
+  const [totalGamesPlayed, setTotalGamesPlayed] = useState(0);
+  const [totalScore, setTotalScore] = useState(0);
 
 /*
     1. Use Effect to fetch all invitations!
@@ -105,18 +107,42 @@ const ProfilePage = () => {
     }
   };
 
-  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem('token');// Retrieve token from local storage        
+        if (!token) {// Check if token exists
+          throw new Error('Token not found in local storage.');
+        }
+    
+        //const userId = decode(token);// Decode the token to get the user ID  
+        const config = {// Attach token to request headers
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        };
+        const response = await axios.get(`/api/participation/played`, config);
+        setTotalGamesPlayed(response.data.totalGamesPlayed);
+        setTotalScore(response.data.totalScore);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+
   return (
-    <div className="h-lg flex items-center justify-center">
+    <div className="min h-lg flex items-center justify-center">
     <div className="w-full max-w-md">
-        <h2 className="text-2xl font-semibold mb-9 bg-gradient-to-r from-pink-500 to-purple-500 text-transparent bg-clip-text">Profile</h2>
 
         {/* Create Group Section */}
         <div className="mb-4">
-        <h3 className="text-lg font-semibold mb-2 text-white">Create Group</h3>
+        <h3 className="underline text-lg font-semibold mb-4 text-white">Create Group</h3>
         {!groupCreated && (
         <div>
-          <button onClick={() => setGroupCreated(true)} className="bg-blue-500 text-white px-4 py-2 rounded focus:outline-none focus:bg-blue-600">
+          <button onClick={() => setGroupCreated(true)} className="bg-transparent hover:bg-purple-700 text-purple-400 font-semibold hover:text-white py-2 px-4 border border-purple-500 hover:border-transparent rounded">
             Create Group
           </button>
         </div>
@@ -126,29 +152,31 @@ const ProfilePage = () => {
               {emails.map((email, index) => (
                 <div key={index} className="flex items-center mt-2">
                   <input type="email" value={email} onChange={(event) => handleEmailChange(index, event)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-indigo-500"required/>
+                    className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-indigo-500 mb-4 mr-4"required/>
 
-                  <button type="button" onClick={() => handleRemoveEmail(index)} className="ml-2 bg-red-500 text-white px-3 py-2 rounded focus:outline-none">
+                  <button type="button" onClick={() => handleRemoveEmail(index)} className="bg-transparent hover:bg-red-700 text-pink-200 font-semibold hover:text-white py-2 px-4 border border-purple-500 hover:border-transparent rounded mb-4">
                     Remove
                   </button>
                 </div>
               ))}
-              <button type="button" onClick={handleAddEmail}className="mt-2 bg-green-500 text-white px-4 py-2 rounded focus:outline-none"> Add Email </button>
+              <button type="button" onClick={handleAddEmail}className="bg-transparent hover:bg-purple-700 text-pink-200 font-semibold hover:text-white py-2 px-4 border border-purple-500 hover:border-transparent rounded mr-4"> Add Email </button>
 
-              <button type="submit"className="mt-4 bg-blue-500 text-white px-4 py-2 rounded focus:outline-none focus:bg-blue-600">Send Invitation</button>
+              <button type="submit"className="bg-transparent hover:bg-pink-700 text-pink-200 font-semibold hover:text-white py-2 px-4 border border-purple-500 hover:border-transparent rounded ml-5">Send Invitation</button>
             </form>
           )}
         </div>
 
         {/* My Invitations Section */}
         <div className="mb-4">
-          <h3 className="text-lg font-semibold mb-2 text-white">My Invitations</h3>
+          <h3 className="underline text-lg font-semibold mb-2 text-white mt-2">My Invitations</h3>
           {invitations.map(invitation => (
             <div key={invitation.id} className="flex items-center justify-between border-b border-gray-300 py-2">
-              <span>{invitation.gameName}</span>
+              <div>
+              <span className="text-white text-l mb-6">{invitation.Game.User.username}</span> {/* Display username */}
+              </div>
               <button 
                 onClick={() => handleJoinGame(invitation.gameId)}
-                className="bg-blue-500 text-white px-4 py-2 rounded focus:outline-none hover:bg-blue-600"
+                className="bg-transparent hover:bg-pink-700 text-pink-200 font-semibold hover:text-white py-2 px-4 border border-pink-500 hover:border-transparent rounded"
               >
                 Join Game
               </button>
@@ -158,17 +186,23 @@ const ProfilePage = () => {
 
         {/* Other Profile Content */}
         <form>
-          <div className="mb-4">
-            <label htmlFor="username" className="block text-white text-sm font-medium mb-2">
-              Quests played
-            </label>
+          <div className="mb-6">
+            <label htmlFor="username" className="underline text-lg font-semibold mb-2 text-white mt-2">
+              Quests played  
+              </label>
+              <div className="text-white text-l mb-6">
+              {totalGamesPlayed}
+              </div>
+            
          
           </div>
           <div className="mb-4">
-            <label htmlFor="username" className="block text-white text-sm font-medium mb-2">
-              Score
+            <label htmlFor="username" className="underline text-lg font-semibold mb-2 text-white mt-2">
+              Score  
             </label>
-        
+            <div className="text-white text-l mb-1">
+            {totalScore}
+              </div>
           </div>
         </form>
       </div>

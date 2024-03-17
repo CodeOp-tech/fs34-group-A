@@ -47,6 +47,28 @@ router.get("/", userShouldBeLoggedIn, async (req, res, next) => {
 //   }
 // });
 
+// router.get("/invitations", userShouldBeLoggedIn, async (req, res, next) => {
+//   const userId = req.userId; 
+
+//   try {
+//     const invitations = await models.Participation.findAll({
+//       where: {
+//         userId: userId,
+//         completedAt: null, // Assuming completedAt signifies if the invitation is pending or accepted
+//       },
+//       include: {
+//         model: models.Game // Optionally include the game details associated with the invitation
+//       }
+//     });
+
+//     res.send(invitations);
+//   } catch (error) {
+//     res.status(500).send(error);
+//   }
+// });
+
+
+// Postman Test = OK (http://localhost:4000/api/participation/invitations) fetches invitations with the game id
 router.get("/invitations", userShouldBeLoggedIn, async (req, res, next) => {
   const userId = req.userId; 
 
@@ -56,14 +78,52 @@ router.get("/invitations", userShouldBeLoggedIn, async (req, res, next) => {
         userId: userId,
         completedAt: null, // Assuming completedAt signifies if the invitation is pending or accepted
       },
-      include: {
-        model: models.Game // Optionally include the game details associated with the invitation
-      }
+      include: [
+        {
+          model: models.Game,
+          include: models.User // Include the User model to fetch the user's information
+        }
+      ]
     });
 
     res.send(invitations);
   } catch (error) {
     res.status(500).send(error);
+  }
+});
+
+
+// Postman Test = OK (http://localhost:4000/api/participation/invitations)// To get total games played and total score!
+router.get("/played", userShouldBeLoggedIn, async (req, res, next) => {
+  const userId = req.userId;
+
+  try {
+    // Fetch all participation records for the specified userId
+    const participations = await models.Participation.findAll({
+      where: {
+        userId: userId,
+        completedAt: { [models.Sequelize.Op.not]: null } // Fetch only completed participation records
+      },
+      attributes: ['score'] // Include only the score attribute
+    });
+
+    // Calculate the total number of games played
+    const totalGamesPlayed = participations.length;
+
+    // Calculate the accumulated score
+    let totalScore = 0;
+    participations.forEach(participation => {
+      totalScore += participation.score || 0; // Add score to totalScore, default to 0 if score is null
+    });
+
+    // Send the response with the total games played and accumulated score
+    res.json({
+      totalGamesPlayed: totalGamesPlayed,
+      totalScore: totalScore
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 });
 

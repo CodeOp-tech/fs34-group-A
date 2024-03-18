@@ -3,15 +3,15 @@
     2. Game Creation & Participation Creation  =  POST request to update Game Table solution based on userID & update Participation table  
 
 */
-
+require('dotenv').config();
 var express = require("express");
 var router = express.Router();
 const models = require("../models");
 const axios = require('axios'); //
 const userShouldBeLoggedIn = require("../guards/userShouldBeLoggedIn") //
 const { User } = require('../models');
-const EMAIL_USER = process.env.EMAIL_USER;//
-const EMAIL_PASS = process.env.EMAIL_PASS;//
+//const EMAIL_USER = process.env.EMAIL_USER;//
+//const EMAIL_PASS = process.env.EMAIL_PASS;//
 const nodemailer = require('nodemailer');
 
 
@@ -122,15 +122,15 @@ const transporter = nodemailer.createTransport({
   port: 465,
   secure: true,
   auth: {
-    user: EMAIL_USER,  //how is the .env file supposed to look
-    pass: EMAIL_PASS, /// this
+    user: process.env.EMAIL_USER,  //how is the .env file supposed to look
+    pass: process.env.EMAIL_PASS, /// this
   },
 });
 
 async function sendEmail(email, gameId) {
-  let joiningLink = `http://yourhomepage.com${gameId}`; // Send them to the gameId, front end logic for authentication will redirect them to the game
+  let joiningLink = `http://localhost:5173`; // Send them to the gameId, front end logic for authentication will redirect them to the game
   const invitation = {
-    from: `<${EMAIL_USER}>`, ///this 
+    from: `<${process.env.EMAIL_USER}>`, ///this 
     to: email,
     subject: 'You are invited to a new game!',
     text: `I am glad to invite you to join the WordQuest game. Join the game by clicking on the link: ${joiningLink}`,
@@ -171,8 +171,7 @@ router.post("/", userShouldBeLoggedIn, async (req, res, next) => {
               participantUserId = user.id; // Set participantUserId if user exists
           }
 
-          //send email 
-          //await sendEmail(email, game.id);
+          await sendEmail(email, game.id);
           // Create a new participation record
           return models.Participation.create({ userId: participantUserId, gameId: game.id, email });
       }));
@@ -182,7 +181,8 @@ router.post("/", userShouldBeLoggedIn, async (req, res, next) => {
       res.status(500).send(error);
   }
 });
-
+//send email 
+//await sendEmail(email, game.id);
 //Postman Test = OK (http://localhost:4000/api/games)
 // router.post("/", userShouldBeLoggedIn, async (req, res, next) => {
 //   const userId = req.userId; // User ID extracted from the token

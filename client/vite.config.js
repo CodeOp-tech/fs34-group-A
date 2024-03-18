@@ -11,4 +11,8 @@ export default defineConfig({
         changeOrigin: true,
         secure: false
 }, },
-}, })
+}, 
+define: {
+  "process.env": process.env
+}
+})

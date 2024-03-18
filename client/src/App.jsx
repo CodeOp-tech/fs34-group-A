@@ -56,7 +56,7 @@ export default function App() {
               <div className="container mx-auto">
                 <Routes>
                   <Route path="/" element={<Home />} />
-                  <Route path="/gamepage/:id" element={<GamePage />} />
+                  <Route path="/game/:id" element={<GamePage />} />
                   <Route path="/profilepage" element={<ProfilePage />} />
                   <Route path="/game" element={<Game />} />
                   <Route path="/login" element={<LoginPage />} />

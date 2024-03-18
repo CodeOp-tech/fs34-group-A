@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';//
 import { useNavigate } from 'react-router-dom';
 import emailjs from 'emailjs-com';
+import { useRef } from 'react';
 
 /*
   1. Need a section Create Group button, so when clicked : 
@@ -23,7 +24,6 @@ import emailjs from 'emailjs-com';
 
 
 const Profile = () => {
-
   const [groupCreated, setGroupCreated] = useState(false); // Manages whether the group creation section is visible or not.
   const [emails, setEmails] = useState(['']); // State to store email addresses
   const [invitations, setInvitations] = useState([]);
@@ -110,25 +110,11 @@ const Profile = () => {
           }
         };
       // Send request to create group with emails
-      const response = await axios.post('/api/games', config, { emails });
+      const response = await axios.post('/api/games', { emails }, config);
       console.log(response.data);
       setGroupCreated(true);
-
-      emails.forEach(email => {
-        const templateParams = {
-          to_email: email,
-          // Add any additional parameters required by your email template
-        };
-  
-        emailjs.send(process.env.YOUR_SERVICE_ID, process.env.YOUR_TEMPLATE_ID, templateParams, process.env.YOUR_USER_ID)
-          .then((result) => {
-            console.log('Email sent successfully:', result.text);
-          }, (error) => {
-            console.error('Failed to send email:', error);
-          });
-      });
     } catch (error) {
-      console.error(error.response.data.message);
+      console.error(error);
     }
   };
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { FaHeart } from 'react-icons/fa';
 
 // set new states
 const WordQuest = () => {
@@ -88,7 +89,7 @@ const handleGuessSubmit = () => {
     }
      //store the guessed word
      setGuesses([...guesses, guessedWord]);
-     setGuessedWord(''); // Clear the input field after each guess
+     setGuessedWord(''); // clear the input field after each guess
   };
 
   const handleKeyPress = (event) => {
@@ -169,24 +170,53 @@ useEffect(() => {
   // RETURN STATEMENT
 
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex items-center justify-center h-screen bg-gray-100">
       <div className="bg-white p-8 rounded shadow-md max-w-md">
-        <p>Guess Word: {maskedWord.split('').join(' ')}</p>
-        <p>Attempts Left: {attemptsLeft}</p>
+        <p className="text-2xl font-semibold mb-4 text-purple-600">Guess Word:</p>
+        <div className="flex justify-between items-center bg-gray-200 rounded-lg p-4 mb-4 border border-gray-300">
+          {maskedWord.split('').map((char, index) => (
+            <span key={index} className={`text-2xl ${index === 0 || index === maskedWord.length - 1 ? 'font-bold' : ''}`}>{char}</span>
+          ))}
+        </div>
+        {attemptsLeft > 0 && (
+          <div className="flex items-center mb-4">
+            <p className="text-lg font-semibold mr-2">Attempts Left:</p>
+            {[...Array(attemptsLeft)].map((_, index) => (
+              <FaHeart key={index} className="text-red-600" />
+            ))}
+          </div>
+        )}
         <input
           type="text"
           value={guessedWord}
           onChange={(e) => setGuessedWord(e.target.value)}
           onKeyPress={handleKeyPress} 
           placeholder="Enter the word"
+          className="w-full border rounded-lg py-3 px-4 text-lg text-gray-800 bg-gray-100 focus:outline-none focus:shadow-outline placeholder-gray-500 mb-4"
+          disabled={result === 'Well done!' || result === 'You failed!' || attemptsLeft === 0}
         />
-        <button onClick={handleGuessSubmit}>Submit Guess</button>
-        <p>{result}</p>
-        {guesses.length > 0 && <p>Guessed: {guesses.join(', ')}</p>}
-        <p>Your Points: {userPoints}</p>
+        <button 
+          onClick={handleGuessSubmit} 
+          className="block w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4"
+          disabled={result === 'Well done!' || result === 'You failed!' || attemptsLeft === 0}
+        >
+          Submit Guess
+        </button>
+        <p className={`text-lg font-semibold ${result === 'Well done!' ? 'text-green-600' : result === 'You failed!' ? 'text-red-600' : ''} mb-4`}>{result}</p>
+        {guesses.length > 0 && (
+          <div className="flex flex-wrap items-center">
+            <p className="text-lg font-semibold mr-2">Guessed:</p>
+            {guesses.map((guess, index) => (
+              <span key={index} className="bg-gray-300 text-gray-800 px-3 py-1 rounded-full mr-2 mb-2">{guess}</span>
+            ))}
+          </div>
+        )}
+        <p className="text-lg font-semibold text-purple-600 mt-4">Your Points: {userPoints}</p>
       </div>
     </div>
   );
+  
+  
 };
 
 export default WordQuest;

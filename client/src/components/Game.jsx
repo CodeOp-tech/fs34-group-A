@@ -170,8 +170,8 @@ useEffect(() => {
   // RETURN STATEMENT
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded shadow-md max-w-md">
+    <div className="min h-lg flex items-center justify-center">
+    <div className="w-full max-w-md">
         <p className="text-2xl font-semibold mb-4 text-purple-600">Guess Word:</p>
         <div className="flex justify-between items-center bg-gray-200 rounded-lg p-4 mb-4 border border-gray-300">
           {maskedWord.split('').map((char, index) => (
@@ -180,7 +180,7 @@ useEffect(() => {
         </div>
         {attemptsLeft > 0 && (
           <div className="flex items-center mb-4">
-            <p className="text-lg font-semibold mr-2">Attempts Left:</p>
+            <p className="text-lg font-semibold mr-2 text-purple-600">Attempts Left:</p>
             {[...Array(attemptsLeft)].map((_, index) => (
               <FaHeart key={index} className="text-red-600" />
             ))}
@@ -199,13 +199,14 @@ useEffect(() => {
           onClick={handleGuessSubmit} 
           className="block w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4"
           disabled={result === 'Well done!' || result === 'You failed!' || attemptsLeft === 0}
+          style={{ boxShadow: "0 0 5px white" }}
         >
           Submit Guess
         </button>
-        <p className={`text-lg font-semibold ${result === 'Well done!' ? 'text-green-600' : result === 'You failed!' ? 'text-red-600' : ''} mb-4`}>{result}</p>
+        <p className={`text-lg font-semibold text-white ${result === 'Well done!' ? 'text-green-600' : result === 'You failed!' ? 'text-red-600' : ''} mb-4`}>{result}</p>
         {guesses.length > 0 && (
           <div className="flex flex-wrap items-center">
-            <p className="text-lg font-semibold mr-2">Guessed:</p>
+            <p className="text-lg font-semibold mr-2 text-white">Guessed:</p>
             {guesses.map((guess, index) => (
               <span key={index} className="bg-gray-300 text-gray-800 px-3 py-1 rounded-full mr-2 mb-2">{guess}</span>
             ))}

@@ -9,6 +9,7 @@ import Home from './pages/Home';
 import GamePage from './pages/GamePage';
 import ProfilePage from './pages/ProfilePage';
 import AuthContext from './context/AuthContext';
+import AboutPage from './pages/AboutPage';
 
 
 export default function App() {
@@ -56,6 +57,7 @@ export default function App() {
               <div className="container mx-auto">
                 <Routes>
                   <Route path="/" element={<Home />} />
+                  <Route path="/about" element={<AboutPage />} />
                   <Route path="/gamepage/:id" element={<GamePage />} />
                   <Route path="/profilepage" element={<ProfilePage />} />
                   <Route path="/game" element={<Game />} />

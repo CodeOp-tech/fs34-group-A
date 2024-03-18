@@ -4,6 +4,7 @@ import axios from 'axios';//
 import { useNavigate } from 'react-router-dom';
 import emailjs from 'emailjs-com';
 
+
 /*
   1. Need a section Create Group button, so when clicked : 
       (a) Input Containers to Add Email Address (Add email buttons)
@@ -53,7 +54,7 @@ const Profile = () => {
           throw new Error('Token not found in local storage.');
         }
     
-        //const userId = decode(token);// Decode the token to get the user ID  
+        const userId = decode(token);// Decode the token to get the user ID  
         const config = {// Attach token to request headers
           headers: {
             Authorization: `Bearer ${token}`
@@ -95,40 +96,42 @@ const Profile = () => {
     setEmails(newEmails);
   };
 
-  const handleSubmit = async (event) => {// Handles form submission. Sends a POST request to the backend API with the entered email addresses.
+  const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const token = localStorage.getItem('token');// Retrieve token from local storage        
-        if (!token) {// Check if token exists
-          throw new Error('Token not found in local storage.');
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('Token not found in local storage.');
+      }
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`
         }
-    
-        //const userId = decode(token);// Decode the token to get the user ID  
-        const config = {// Attach token to request headers
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        };
-      // Send request to create group with emails
-      const response = await axios.post('/api/games', config, { emails });
-      console.log(response.data);
-      setGroupCreated(true);
-
-      emails.forEach(email => {
-        const templateParams = {
-          to_email: email,
-          // Add any additional parameters required by your email template
-        };
+      };
+      const response = await axios.post('/api/games', { emails }, config);
+      if (response && response.data) {
+        console.log(response.data);
+        setGroupCreated(true);
   
-        emailjs.send(process.env.YOUR_SERVICE_ID, process.env.YOUR_TEMPLATE_ID, templateParams, process.env.YOUR_USER_ID)
-          .then((result) => {
-            console.log('Email sent successfully:', result.text);
-          }, (error) => {
-            console.error('Failed to send email:', error);
-          });
-      });
+        // Send emails
+        emails.forEach(email => {
+          const templateParams = {
+            to_email: email,
+            // Add any additional parameters required by your email template
+          };
+      
+          emailjs.send(process.env.YOUR_SERVICE_ID, process.env.YOUR_TEMPLATE_ID, templateParams, process.env.YOUR_USER_ID)
+            .then((result) => {
+              console.log('Email sent successfully:', result.text);
+            }, (error) => {
+              console.error('Failed to send email:', error);
+            });
+        });
+      } else {
+        throw new Error('Response data is undefined');
+      }
     } catch (error) {
-      console.error(error.response.data.message);
+      console.error(error.message);
     }
   };
 

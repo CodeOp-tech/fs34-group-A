@@ -78,7 +78,7 @@ function LoginPage() {
   return (
     <div className="bg-gray-900 h-screen flex items-center justify-center">
       <div className="p-20 rounded shadow-[0_0_20px_theme('colors.pink.600')] w-full max-w-md">
-        <h2 className="text-2xl font-semibold mb-9 bg-gradient-to-r from-pink-500 to-purple-500 text-transparent bg-clip-text">{showRegistration ? 'Sign Up' : 'Sign In'}</h2>
+        <h2 className="text-2xl font-semibold mb-9 bg-gradient-to-r from-pink-500 to-purple-500 text-transparent bg-clip-text">{showRegistration}</h2>
 
         <form onSubmit={handleSubmit}>
           {showRegistration && (
@@ -141,7 +141,8 @@ function LoginPage() {
 
           <button
             type="submit"
-            className="w-full bg-indigo-500 text-white py-2 rounded hover:bg-indigo-600 focus:outline-none focus:shadow-outline-indigo"
+            className="block w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4"
+            style={{ boxShadow: "0 0 5px white" }}
           >
             {showRegistration ? 'Sign Up' : 'Sign In'}
           </button>
@@ -150,6 +151,7 @@ function LoginPage() {
         <div className="mt-4 text-center">
           <button onClick={handleSignUpClick} className="text-indigo-500 hover:underline focus:outline-none">
             {showRegistration ? 'Back to Sign In' : 'Or Sign Up'}
+            
           </button>
           {isLoggedIn && (
             <button onClick={handleLogout} className="text-indigo-500 hover:underline focus:outline-none ml-4">

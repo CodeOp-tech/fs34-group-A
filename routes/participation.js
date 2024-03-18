@@ -11,6 +11,7 @@ const models = require("../models");
 const userShouldBeLoggedIn = require("../guards/userShouldBeLoggedIn");
 const { User } = require('../models');
 const { Game } = require('../models');
+const { sequelize } = require('../models');
 
 
 // Postman Test = OK (http://localhost:4000/api/participation)
@@ -93,7 +94,7 @@ router.get("/invitations", userShouldBeLoggedIn, async (req, res, next) => {
 });
 
 
-// Postman Test = OK (http://localhost:4000/api/participation/invitations)// To get total games played and total score!
+// Postman Test = OK (http://localhost:4000/api/participation/played)// To get total games played and total score!
 router.get("/played", userShouldBeLoggedIn, async (req, res, next) => {
   const userId = req.userId;
 
@@ -126,6 +127,45 @@ router.get("/played", userShouldBeLoggedIn, async (req, res, next) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 });
+
+
+// Postman Test = OK (http://localhost:4000/api/participation/scores)// To get total games played and total score!
+router.get("/scores", userShouldBeLoggedIn, async (req, res, next) => {
+    const userId = req.userId;
+  
+    try {
+      // Fetch all participation records for the specified userId
+      const participations = await models.Participation.findAll({
+        // where: {
+        //   userId: userId
+        // },
+        attributes: [
+          'userId',
+          [
+            sequelize.literal(`SUM(score)`),
+            'totalScore'
+          ],
+          [
+            sequelize.literal(`COUNT(DISTINCT score)`),
+            'totalGamesPlayed'
+          ]
+        ],
+        include: [
+          {
+            model: models.User,
+            attributes: ['username'] // Include only the username attribute
+          }
+        ],
+        group: ['userId']
+      });
+    
+      // Send the response with the total games played and accumulated score for each user
+      res.json(participations);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  });
 
 // get request to see if the game has been played or not
 // the "/:id" is the Game ID

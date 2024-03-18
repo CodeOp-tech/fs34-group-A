@@ -2,7 +2,7 @@ import React from 'react'
 import { useState, useEffect } from 'react';
 import axios from 'axios';//
 import { useNavigate } from 'react-router-dom';
-
+import emailjs from 'emailjs-com';
 
 /*
   1. Need a section Create Group button, so when clicked : 
@@ -22,7 +22,7 @@ import { useNavigate } from 'react-router-dom';
 */
 
 
-const ProfilePage = () => {
+const Profile = () => {
 
   const [groupCreated, setGroupCreated] = useState(false); // Manages whether the group creation section is visible or not.
   const [emails, setEmails] = useState(['']); // State to store email addresses
@@ -98,10 +98,35 @@ const ProfilePage = () => {
   const handleSubmit = async (event) => {// Handles form submission. Sends a POST request to the backend API with the entered email addresses.
     event.preventDefault();
     try {
+      const token = localStorage.getItem('token');// Retrieve token from local storage        
+        if (!token) {// Check if token exists
+          throw new Error('Token not found in local storage.');
+        }
+    
+        //const userId = decode(token);// Decode the token to get the user ID  
+        const config = {// Attach token to request headers
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        };
       // Send request to create group with emails
-      const response = await axios.post('/api/games', { emails });
+      const response = await axios.post('/api/games', config, { emails });
       console.log(response.data);
       setGroupCreated(true);
+
+      emails.forEach(email => {
+        const templateParams = {
+          to_email: email,
+          // Add any additional parameters required by your email template
+        };
+  
+        emailjs.send(process.env.YOUR_SERVICE_ID, process.env.YOUR_TEMPLATE_ID, templateParams, process.env.YOUR_USER_ID)
+          .then((result) => {
+            console.log('Email sent successfully:', result.text);
+          }, (error) => {
+            console.error('Failed to send email:', error);
+          });
+      });
     } catch (error) {
       console.error(error.response.data.message);
     }
@@ -151,7 +176,7 @@ const ProfilePage = () => {
             <form onSubmit={handleSubmit}>
               {emails.map((email, index) => (
                 <div key={index} className="flex items-center mt-2">
-                  <input type="email" value={email} onChange={(event) => handleEmailChange(index, event)}
+                  <input type="email" name="user_email" value={email} onChange={(event) => handleEmailChange(index, event)}
                     className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-indigo-500 mb-4 mr-4"required/>
 
                   <button type="button" onClick={() => handleRemoveEmail(index)} className="bg-transparent hover:bg-red-700 text-pink-200 font-semibold hover:text-white py-2 px-4 border border-purple-500 hover:border-transparent rounded mb-4">
@@ -210,4 +235,4 @@ const ProfilePage = () => {
   );
 };
 
-export default ProfilePage;
+export default Profile;

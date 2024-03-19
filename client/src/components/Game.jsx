@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FaHeart } from 'react-icons/fa';
+import { useParams } from 'react-router-dom';
 
 // set new states
 const WordQuest = () => {
@@ -13,6 +14,7 @@ const WordQuest = () => {
   const [participatedGames, setParticipatedGames] = useState([]); //to store participatedGame IDs
   const [userPoints, setUserPoints] = useState(0); //to keep track of user points
   const [guesses, setGuesses] = useState([]); // State to store guessed words
+  const { id } = useParams();// Fetch the game ID from route parameters using useParams
 
 //******************************************************************************************************************** */
  
@@ -22,6 +24,7 @@ const WordQuest = () => {
  //to do so, i need to use axios and it needs to change the word every time the currentWordIndex changes
  // then i need to store the words used in their variable and i need to call the masked word for the first round
  
+ /*
  useEffect(() => {
   //fetching words from the API
   const fetchWords = async () => {
@@ -36,6 +39,39 @@ const WordQuest = () => {
   };
   fetchWords();
  }, [currentWordIndex]);
+*/
+
+ useEffect(() => {
+  const fetchGameDetails = async () => {
+    try {
+      const token = localStorage.getItem('token');// Retrieve token from local storage        
+      if (!token) {// Check if token exists
+        throw new Error('Token not found in local storage.');
+      }
+  
+      //const userId = decode(token);// Decode the token to get the user ID  
+      const config = {// Attach token to request headers
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      };
+      const response = await axios.get(`/api/games/${id}`, config); // Fetch game details using the game ID
+      const fetchedWord = response.data.solution; // Extract the word from the game details response
+      console.log(fetchedWord);
+      setWords(prevWords => {
+        const newWords = [...prevWords]; // Copy the previous words array
+        newWords[currentWordIndex] = fetchedWord; // Update the word at the currentWordIndex
+        return newWords; // Return the updated words array
+      });
+      initializeMaskedWord(fetchedWord); // Initialize the masked word with the fetched word
+    } catch (error) {
+      console.error(error); // Log any errors that occur during fetching
+    }
+  };
+
+  fetchGameDetails(); // Call the fetchGameDetails function when the component mounts or when the game ID changes
+}, [currentWordIndex]); // Trigger useEffect when the currentWordIndex changes
+
 
 //******************************************************************************************************* */
 
@@ -44,12 +80,20 @@ const WordQuest = () => {
 //use _ for all the letters except for thew first letter word[0] and the last letter [word-lenght -1]
 // i need to make sure that all the letters are masked except for the FIRST and LAST
 // to do this i need to do _ and repeat it for the word.length except 2 spots
+
   const initializeMaskedWord = (word) => {
     const initialMaskedWord = word[0] + '_'.repeat(word.length - 2) + word[word.length - 1];
     setMaskedWord(initialMaskedWord);
   };
 
-
+/*
+const initializeMaskedWord = (word) => {
+  if (word) { // Ensure word is defined before initializing masked word
+    const initialMaskedWord = word[0] + '_'.repeat(word.length - 2) + word[word.length - 1];
+    setMaskedWord(initialMaskedWord);
+  }
+};
+*/
   //****************************************************************************************************** */
 
 // IT WORKS
@@ -162,6 +206,24 @@ useEffect(() => {
     checkParticipation(index);
   });
 }, [words]); //trigger useEffect when the words change
+
+
+useEffect(() => {
+  if (attemptsLeft === 0) {
+    const updateParticipation = async () => {
+      try {
+        const response = await axios.put(`/api/games/${id}/play`, {
+          score: userPoints,
+          completedAt: new Date().toISOString(),
+        });
+        console.log('Participation updated:', response.data);
+      } catch (error) {
+        console.error('Error updating participation:', error);
+      }
+    };
+    updateParticipation();
+  }
+}, [attemptsLeft, userPoints]);
 
 
   //********************************************************************************************************* */

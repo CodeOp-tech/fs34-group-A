@@ -27,6 +27,12 @@ export default function NavBar() {
           >
             Home
           </Link>
+          <Link
+            to="/about"
+            className="text-white text-lg font-semibold hover:text-pink-500 px-8 py-3 relative before:absolute before:w-2/3 before:h-2/3 before:top-0 before:left-0 before:border-t before:border-l before:border-pink before:border-solid after:absolute after:w-2/3 after:h-2/3 after:right-0 after:bottom-0 after:border-b after:border-r after:border-pink after:border-solid hover:after:w-full hover:after:h-full hover:before:w-full hover:before:h-full before:duration-300 after:duration-300 text-grey-500 hover:text-white rounded-full mb-4 md:mb-0"
+          >
+            About
+          </Link>
         </div>
         
         <div className="flex items-center">

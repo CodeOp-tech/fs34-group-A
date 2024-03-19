@@ -36,8 +36,10 @@ const GamePage = () => {
   const text = "WordQuest";
   
   return (
-    <div className="min h-screen flex items-center justify-center">
-      <div className="bg-gray-900 p-20 rounded shadow-[0_0_20px_theme('colors.pink.600')] w-full max-w-3xl">
+    <div className="bg-gray-900 min-h-screen flex items-center justify-center rounded">
+    <div className="relative bg-slate-800 p-20 rounded shadow-[0_0_10px_theme('colors.purple.700')] w-full max-h-dvh max-w-screen-md justify-center overflow-hidden ">
+       
+      
       <div className=" mb-4 "> 
               <h2 id="text" className="text-6xl font-semibold mb-9 text-pink-500 opacity-90 bg-clip-text transition duration-150 ease-in-out">
               {/* Map through each character in the text */}
@@ -52,7 +54,6 @@ const GamePage = () => {
             ))}
               </h2> 
 
-        {/* <div className="text-white text-xl mb-6">Welcome to the Game!</div> */}
         <Game />
       </div>
     </div>

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
-import axios from 'axios';//
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -33,7 +33,7 @@ const Leaderboard = () => {
     
       return (
         <div className="min-h-lg flex items-center justify-center">
-          <div className="w-full max-w-md">
+          <div className="w-full max-w-md overflow-hidden inline-block">
     
             {/* Leaderboard Section */}
             <div className="mb-4">

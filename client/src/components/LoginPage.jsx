@@ -76,10 +76,13 @@ function LoginPage() {
 
 
   return (
-    <div className="bg-gray-900 h-screen flex items-center justify-center">
-      <div className="p-20 rounded shadow-[0_0_20px_theme('colors.pink.600')] w-full max-w-md">
+    <div className="bg-gray-900 min-h-screen flex items-center justify-center rounded">
+      
+     <div className="relative bg-slate-800 p-20 rounded shadow-[0_0_10px_theme('colors.purple.700')] w-full max-h-dvh max-w-screen-md justify-center overflow-hidden ">
+        
+       
         <h2 className="text-2xl font-semibold mb-9 bg-gradient-to-r from-pink-500 to-purple-500 text-transparent bg-clip-text">{showRegistration}</h2>
-
+    
         <form onSubmit={handleSubmit}>
           {showRegistration && (
             <div className="mb-4">
@@ -161,6 +164,7 @@ function LoginPage() {
         </div>
       </div>
     </div>
+ 
   );
 }
 

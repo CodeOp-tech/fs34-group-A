@@ -118,6 +118,29 @@ const Profile = () => {
     }
   };
 
+  const handleSolo = async (event) => {// Handles form submission. Sends a POST request to the backend API with the entered email addresses.
+    event.preventDefault();
+    try {
+      const token = localStorage.getItem('token');// Retrieve token from local storage        
+        if (!token) {// Check if token exists
+          throw new Error('Token not found in local storage.');
+        }
+    
+        //const userId = decode(token);// Decode the token to get the user ID  
+        const config = {// Attach token to request headers
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        };
+      // Send request to create group with emails
+      const response = await axios.post('/api/games/solo', {}, config);
+      console.log(response.data);
+      navigate(`/game/${response.data.id}`);// Navigate to the newly created gam
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -194,7 +217,12 @@ const Profile = () => {
             </div>
           ))}
         </div>
-
+        <div>
+          {/* Solo Game Section */}
+          <button onClick={handleSolo} className="mt-4 bg-transparent hover:bg-purple-700 text-purple-400 font-semibold hover:text-white py-2 px-4 border border-purple-500 hover:border-transparent rounded mb-4">
+            Play Solo
+          </button>
+        </div>
         {/* Other Profile Content */}
         <form>
           <div className="mb-6">
@@ -202,7 +230,7 @@ const Profile = () => {
               Quests played  
               </label>
               <div className="text-white text-l mb-6">
-              {totalGamesPlayed}
+              {totalGamesPlayed}  
               </div>
             
          

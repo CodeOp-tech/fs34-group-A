@@ -14,7 +14,9 @@ const WordQuest = () => {
   const [participatedGames, setParticipatedGames] = useState([]); //to store participatedGame IDs
   const [userPoints, setUserPoints] = useState(0); //to keep track of user points
   const [guesses, setGuesses] = useState([]); // State to store guessed words
+  const [isAnswerSubmitted, setIsAnswerSubmitted] = useState(false); // New state variable////
   const { id } = useParams();// Fetch the game ID from route parameters using useParams
+  const { gameId } = useParams();
 
 //******************************************************************************************************************** */
  
@@ -104,8 +106,8 @@ const initializeMaskedWord = (word) => {
 // after each guess you have one less attempt
 //if you reach 3 guesses then you lose the game and try again tomorrow
 // keep track of guesses and if the guessed word is correct and matched the actual word
-  
-const handleGuessSubmit = () => {
+ 
+const handleGuessSubmit =  async () => {
     //i need to get the word from the array using the wordIndex and then use lowercase to be insensitive when typing
     //look at previous exercise game
     const currentWord = words[currentWordIndex].toLowerCase();
@@ -115,9 +117,28 @@ const handleGuessSubmit = () => {
     if (guessedWord.toLowerCase() === currentWord) {
       //adding pointing system depending on attempts
       setResult(`Well done, you guessed the word: ${currentWord}!`);
-      const pointsEarned =
-        attemptsLeft === 3 ? 10 : attemptsLeft === 2 ? 5 : attemptsLeft === 1 ? 1 : 0;
+      const pointsEarned = (attemptsLeft === 3 ? 10 : attemptsLeft === 2 ? 5 : attemptsLeft === 1 ? 1 : 0);
       setUserPoints(userPoints + pointsEarned); // Add points to user
+      setIsAnswerSubmitted(true); // Mark the answer as submitted////
+      //
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          throw new Error('Token not found in local storage.');
+        }
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        };
+        await axios.put(`/api/participation/play/${id}`, {
+          userId: token, // Implement this function to retrieve userId
+          score: userPoints,
+          completedAt: new Date().toISOString()
+        }, config);
+      } catch (error) {
+        console.error('Error updating participation:', error);
+      }//
     } else {
       // also if the guessed word does not match the actual word i have one attempt less
       //i need to DECREASE the number of attempts left by 1 each time
@@ -208,22 +229,22 @@ useEffect(() => {
 }, [words]); //trigger useEffect when the words change
 
 
-useEffect(() => {
-  if (attemptsLeft === 0) {
-    const updateParticipation = async () => {
-      try {
-        const response = await axios.put(`/api/games/${id}/play`, {
-          score: userPoints,
-          completedAt: new Date().toISOString(),
-        });
-        console.log('Participation updated:', response.data);
-      } catch (error) {
-        console.error('Error updating participation:', error);
-      }
-    };
-    updateParticipation();
-  }
-}, [attemptsLeft, userPoints]);
+// useEffect(() => {
+//   if (attemptsLeft === 0) {
+//     const updateParticipation = async () => {
+//       try {
+//         const response = await axios.put(`/api/games/play/${gameId}`, {
+//           score: userPoints,
+//           completedAt: new Date().toISOString(),
+//         });
+//         console.log(response.data);
+//       } catch (error) {
+//         console.error('Error updating participation:', error);
+//       }
+//     };
+//     updateParticipation();
+//   }
+// }, [attemptsLeft, userPoints]);
 
 
   //********************************************************************************************************* */
@@ -232,8 +253,8 @@ useEffect(() => {
   // RETURN STATEMENT
 
   return (
-    <div className="min h-lg flex items-center justify-center">
-    <div className="w-full max-w-md">
+    <div className="flex items-center justify-center h-screen bg-gray-100">
+      <div className="bg-white p-8 rounded shadow-md max-w-md">
         <p className="text-2xl font-semibold mb-4 text-purple-600">Guess Word:</p>
         <div className="flex justify-between items-center bg-gray-200 rounded-lg p-4 mb-4 border border-gray-300">
           {maskedWord.split('').map((char, index) => (
@@ -242,7 +263,7 @@ useEffect(() => {
         </div>
         {attemptsLeft > 0 && (
           <div className="flex items-center mb-4">
-            <p className="text-lg font-semibold mr-2 text-purple-600">Attempts Left:</p>
+            <p className="text-lg font-semibold mr-2">Attempts Left:</p>
             {[...Array(attemptsLeft)].map((_, index) => (
               <FaHeart key={index} className="text-red-600" />
             ))}
@@ -255,20 +276,19 @@ useEffect(() => {
           onKeyPress={handleKeyPress} 
           placeholder="Enter the word"
           className="w-full border rounded-lg py-3 px-4 text-lg text-gray-800 bg-gray-100 focus:outline-none focus:shadow-outline placeholder-gray-500 mb-4"
-          disabled={result === 'Well done!' || result === 'You failed!' || attemptsLeft === 0}
+          disabled={result === 'Well done!' || result === 'You failed!' || attemptsLeft === 0 || isAnswerSubmitted}
         />
         <button 
           onClick={handleGuessSubmit} 
           className="block w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4"
-          disabled={result === 'Well done!' || result === 'You failed!' || attemptsLeft === 0}
-          style={{ boxShadow: "0 0 5px white" }}
+          disabled={result === 'Well done!' || result === 'You failed!' || attemptsLeft === 0 || isAnswerSubmitted}
         >
           Submit Guess
         </button>
-        <p className={`text-lg font-semibold text-white ${result === 'Well done!' ? 'text-green-600' : result === 'You failed!' ? 'text-red-600' : ''} mb-4`}>{result}</p>
+        <p className={`text-lg font-semibold ${result === 'Well done!' ? 'text-green-600' : result === 'You failed!' ? 'text-red-600' : ''} mb-4`}>{result}</p>
         {guesses.length > 0 && (
           <div className="flex flex-wrap items-center">
-            <p className="text-lg font-semibold mr-2 text-white">Guessed:</p>
+            <p className="text-lg font-semibold mr-2">Guessed:</p>
             {guesses.map((guess, index) => (
               <span key={index} className="bg-gray-300 text-gray-800 px-3 py-1 rounded-full mr-2 mb-2">{guess}</span>
             ))}

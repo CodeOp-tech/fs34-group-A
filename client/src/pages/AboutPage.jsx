@@ -25,7 +25,7 @@ const AboutPage = () => {
             Welcome to WordQuest, a fun word-guessing game where you can test your vocabulary skills!
           </p>
           <p className="text-lg mb-4 text-white text-left">
-             Here's how to play:
+             Here's how to play the game:
         </p>
         <ol className="list-decimal list-inside mb-4 text-white text-left">
   <li>Guess the Word: Figure out the hidden word by typing your guesses in the box.</li>

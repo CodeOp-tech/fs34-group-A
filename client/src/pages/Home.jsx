@@ -79,7 +79,54 @@ const Home = () => {
               >
                 Play
               </button>
+              
             </div>
+            
+            <div className="mb-20"></div>
+           
+            <div className="z-10 flex flex-col items-center justify-center">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold mb-4 text-pink-500">How to play</h1>
+        
+            <p className="text-lg mb-4 text-white">
+              Welcome to WordQuest! Dive into a world of words by playing by yourself or with your friends.
+            </p>
+            <ul className="list-disc list-inside mb-6 text-white">
+              <li className="mb-2">
+                <span className="font-semibold text-pink-500">Uncover the Mystery Word:</span> Guess the secret word by entering your guesses.
+              </li>
+              <li className="mb-2">
+                <span className="font-semibold text-pink-500">Submit Your Guess:</span> Type your guess and press "Enter" or click "Submit."
+              </li>
+              <li className="mb-2">
+                <span className="font-semibold text-pink-500">Watch Your Attempts:</span> Each incorrect guess brings you closer to revealing the word.
+              </li>
+              <li className="mb-2">
+                <span className="font-semibold text-pink-500">Receive Feedback:</span> We'll let you know if your guess is correct and show the word if not.
+              </li>
+              <li className="mb-2">
+                <span className="font-semibold text-pink-500">Track Your Progress:</span> View all your guesses and earn points for correct ones.
+              </li>
+              <li>
+                <span className="font-semibold text-pink-500">Compete for Points:</span> See how many points you can rack up!
+              </li>
+            </ul>
+            <p className="text-lg mb-10 text-white">Enjoy the game!</p>
+
+            <div id="app" 
+            className="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 bg-gradient-to-r from-pink-500 to-purple-500 pt-5 pb-5 gap-20 rounded-full items-center mx-auto w-1/2"
+            style={{ boxShadow: "0 0 10px white, inset 0 0 0 2px rgba(255, 255, 255, 0.6)" }}>
+              <button
+                onClick={handlePlayClick}
+                className="font-semibold px-8 py-3 relative before:absolute before:w-2/3 before:h-2/3 before:top-0 before:left-0 before:border-t before:border-l before:border-pink before:border-solid after:absolute after:w-2/3 after:h-2/3 after:right-0 after:bottom-0 after:border-b after:border-r after:border-pink after:border-solid hover:after:w-full hover:after:h-full hover:before:w-full hover:before:h-full before:duration-300 after:duration-300 text-grey-500 hover:text-white rounded-full"
+                
+              >
+                Play
+              </button>
+              
+            </div>
+          </div>
+        </div>
           </div>
         </div>
       </div>
@@ -88,8 +135,3 @@ const Home = () => {
 };
 
 export default Home;
-
-
-// {/* <div className="slideInRight mb-4 animate-pulse"> {/* Apply pulse animation */}
-// <h2 className="text-2xl font-semibold mb-9 bg-gradient-to-r from-pink-500 to-purple-500 text-transparent bg-clip-text transition duration-150 ease-in-out">WordQuest</h2> {/* Apply bounce animation */}
-// </div> */}

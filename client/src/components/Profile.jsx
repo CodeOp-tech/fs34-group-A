@@ -170,13 +170,22 @@ const Profile = () => {
   return (
     <div className="min h-lg flex items-center justify-center">
     <div className="w-full max-w-md">
+    <div>
+          {/* Solo Game Section */}
+          <button onClick={handleSolo} className=" block w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4">
+            Play Solo
+          </button>
+        </div>
+        <div>
+          <p className='text-white'>or play as a group</p>
+        </div>
 
         {/* Create Group Section */}
         <div className="mb-4">
-        <h3 className="underline text-lg font-semibold mb-4 text-white">Create Group</h3>
+        {/* <h3 className="underline text-lg font-semibold mb-4 text-white">Create Group</h3> */}
         {!groupCreated && (
         <div>
-          <button onClick={() => setGroupCreated(true)} className="bg-transparent hover:bg-purple-700 text-purple-400 font-semibold hover:text-white py-2 px-4 border border-purple-500 hover:border-transparent rounded">
+          <button onClick={() => setGroupCreated(true)} className="block w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4">
             Create Group
           </button>
         </div>
@@ -217,12 +226,7 @@ const Profile = () => {
             </div>
           ))}
         </div>
-        <div>
-          {/* Solo Game Section */}
-          <button onClick={handleSolo} className="mt-4 bg-transparent hover:bg-purple-700 text-purple-400 font-semibold hover:text-white py-2 px-4 border border-purple-500 hover:border-transparent rounded mb-4">
-            Play Solo
-          </button>
-        </div>
+       
         {/* Other Profile Content */}
         <form>
           <div className="mb-6">

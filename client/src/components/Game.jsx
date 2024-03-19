@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FaHeart } from 'react-icons/fa';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+
 
 // set new states
 const WordQuest = () => {
@@ -17,6 +18,8 @@ const WordQuest = () => {
   const [isAnswerSubmitted, setIsAnswerSubmitted] = useState(false); // New state variable////
   const { id } = useParams();// Fetch the game ID from route parameters using useParams
   const { gameId } = useParams();
+ 
+
 
 //******************************************************************************************************************** */
  
@@ -228,6 +231,12 @@ useEffect(() => {
   });
 }, [words]); //trigger useEffect when the words change
 
+const navigate = useNavigate(); // Initialize useNavigate hook
+
+const handleProfileClick = () => {
+  navigate("/profilepage"); // Navigate to profile page
+};
+
 
 // useEffect(() => {
 //   if (attemptsLeft === 0) {
@@ -253,17 +262,17 @@ useEffect(() => {
   // RETURN STATEMENT
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded shadow-md max-w-md">
+    <div className="">
+        
         <p className="text-2xl font-semibold mb-4 text-purple-600">Guess Word:</p>
-        <div className="flex justify-between items-center bg-gray-200 rounded-lg p-4 mb-4 border border-gray-300">
+        <div className="flex justify-between items-center bg-gray-00 rounded-lg p-4 mb-4 border border-gray-300">
           {maskedWord.split('').map((char, index) => (
-            <span key={index} className={`text-2xl ${index === 0 || index === maskedWord.length - 1 ? 'font-bold' : ''}`}>{char}</span>
+            <span key={index} className={`text-2xl text-white ${index === 0 || index === maskedWord.length - 1 ? 'font-bold' : ''}`}>{char}</span>
           ))}
         </div>
         {attemptsLeft > 0 && (
           <div className="flex items-center mb-4">
-            <p className="text-lg font-semibold mr-2">Attempts Left:</p>
+            <p className="text-lg font-semibold mr-2 text-white ">Attempts Left:</p>
             {[...Array(attemptsLeft)].map((_, index) => (
               <FaHeart key={index} className="text-red-600" />
             ))}
@@ -285,18 +294,27 @@ useEffect(() => {
         >
           Submit Guess
         </button>
-        <p className={`text-lg font-semibold ${result === 'Well done!' ? 'text-green-600' : result === 'You failed!' ? 'text-red-600' : ''} mb-4`}>{result}</p>
+        <p className={`text-lg text-white font-semibold ${result === 'Well done!' ? 'text-green-600' : result === 'You failed!' ? 'text-red-600' : ''} mb-4`}>{result}</p>
         {guesses.length > 0 && (
           <div className="flex flex-wrap items-center">
-            <p className="text-lg font-semibold mr-2">Guessed:</p>
+            <p className="text-lg font-semibold mr-2 text-white">Guessed:</p>
             {guesses.map((guess, index) => (
               <span key={index} className="bg-gray-300 text-gray-800 px-3 py-1 rounded-full mr-2 mb-2">{guess}</span>
             ))}
           </div>
         )}
         <p className="text-lg font-semibold text-purple-600 mt-4">Your Points: {userPoints}</p>
+
+        <button 
+        onClick={handleProfileClick} 
+        
+        className="block w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4"
+      >
+        Back to Profile
+       
+      </button>
       </div>
-    </div>
+   
   );
   
   

@@ -133,7 +133,7 @@ const handleGuessSubmit =  async () => {
         };
         await axios.put(`/api/participation/play/${id}`, {
           userId: token, // Implement this function to retrieve userId
-          score: userPoints,
+          score: pointsEarned,
           completedAt: new Date().toISOString()
         }, config);
       } catch (error) {

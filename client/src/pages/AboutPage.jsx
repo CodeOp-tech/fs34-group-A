@@ -6,7 +6,7 @@ const AboutPage = () => {
   return (
     <div className="min h-screen flex items-center justify-center">
       <div className="bg-gray-900 p-20 rounded shadow-[0_0_20px_theme('colors.pink.600')] w-full max-w-3xl">
-        <div className="mb-4">
+        <div className="mb-4 py-12">
         <h1 className="text-3xl font-bold mb-4 text-white">About</h1>
           <h2 id="text" className="text-6xl font-semibold mb-9 text-pink-500 opacity-90 bg-clip-text transition duration-150 ease-in-out">
             {/* Map through each character in the text */}

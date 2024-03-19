@@ -54,7 +54,7 @@ export default function App() {
             {isLoading ? ( // Conditionally render loading spinner
               <LoadingSpinner />
             ) : (
-              <div className="container mx-auto">
+              <div className="container mx-auto py-12">
                 <Routes>
                   <Route path="/" element={<Home />} />
 

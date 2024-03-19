@@ -1,8 +1,8 @@
 import React, { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
-import SplitType from 'split-type'; // Import SplitType library
-import gsap from 'gsap'; // Import gsap library
+import SplitType from 'split-type'; 
+import gsap from 'gsap'; 
 
 const Home = () => {
   const navigate = useNavigate();

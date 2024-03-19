@@ -151,7 +151,7 @@ router.post("/", userShouldBeLoggedIn, async (req, res, next) => {
 
   try {
       // Call external API to fetch solution
-      const apiResponse = await axios.get(`https://random-word-api.vercel.app/api?words=1&type=capitalized`);
+      const apiResponse = await axios.get(`https://random-word-api.vercel.app/api?words=10&length=5`);
       const solution = apiResponse.data[0]; // Assuming the API response is an array of words, and we extract the first one
 
       // Create a new game with the provided solution
@@ -181,6 +181,35 @@ router.post("/", userShouldBeLoggedIn, async (req, res, next) => {
       res.status(500).send(error);
   }
 });
+
+//This endpoint is to create a game for a solo player. So there is not group created. 
+// Postman Test = OK (http://localhost:4000/api/games/solo)
+router.post("/solo", userShouldBeLoggedIn, async (req, res, next) => {
+  const userId = req.userId; // User ID extracted from the token
+  const participantUserId = userId; // Assuming the participant user ID is the same as the logged-in user ID
+
+  try {
+    // Call external API to fetch solution
+    const apiResponse = await axios.get(`https://random-word-api.vercel.app/api?words=10&length=5`);
+    const solution = apiResponse.data[0]; // Assuming the API response is an array of words, and we extract the first one
+
+    // Fetch the user's email from the Users table
+    const user = await models.User.findByPk(userId);
+    const email = user.email; // Assuming there's an email field in the Users table
+
+    // Create a new game with the provided solution
+    const game = await models.Game.create({ solution, userId });
+
+    // Create a participation record for the logged-in user
+    await models.Participation.create({ userId: participantUserId, gameId: game.id, email });
+
+    res.send(game);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+
 //send email 
 //await sendEmail(email, game.id);
 //Postman Test = OK (http://localhost:4000/api/games)

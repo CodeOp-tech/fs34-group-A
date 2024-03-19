@@ -198,26 +198,58 @@ router.get("/:id", userShouldBeLoggedIn, async (req, res, next) => {
 
 //  to create an endpoint to update a participant's play information
 // Postman Test = OK (http://localhost:4000/:id/play)
-router.put('/:id/play', userShouldBeLoggedIn, async (req, res) => {
-  const { id } = req.params;
+// router.put('/:id/play', userShouldBeLoggedIn, async (req, res) => {
+//   const { id } = req.params;
+//   const { score, completedAt } = req.body;
+
+//   try {
+//     // Find the participant with the specified ID and include the associated Game with userId check
+//     const participation = await models.Participation.findOne({
+//       where: {
+//         id,
+//       },
+//       include: {
+//         model: Game,
+//         where: {
+//           userId: req.userId,
+//         },
+//       },
+//     });
+
+//     // Update the participant's score and completion date
+//     await participation.update({ score, completedAt });
+
+//     res.send(participation);
+//   } catch (err) {
+//     console.error('Error updating participation:', err);
+//     res.status(500).send(err);
+//   }
+// });
+
+
+router.put('/play/:gameId', userShouldBeLoggedIn, async (req, res) => {
   const { score, completedAt } = req.body;
+  const { gameId } = req.params;
 
   try {
-    // Find the participant with the specified ID and include the associated Game with userId check
-    const participation = await models.Participation.findOne({
+    // Find the participation record to update
+    let participation = await models.Participation.findOne({
       where: {
-        id,
-      },
-      include: {
-        model: Game,
-        where: {
-          userId: req.userId,
-        },
-      },
+        userId: req.userId,
+        gameId,
+      }
     });
 
-    // Update the participant's score and completion date
+    // Update the participation record
     await participation.update({ score, completedAt });
+
+    // Fetch the updated participation record
+    participation = await models.Participation.findOne({
+      where: {
+        userId: req.userId,
+        gameId,
+      }
+    });
 
     res.send(participation);
   } catch (err) {
@@ -226,7 +258,6 @@ router.put('/:id/play', userShouldBeLoggedIn, async (req, res) => {
   }
 });
 
- 
 
 /*   shrudhi
     This route updates the userId for new players.

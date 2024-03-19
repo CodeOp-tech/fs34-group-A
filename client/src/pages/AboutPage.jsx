@@ -1,7 +1,7 @@
 import React from 'react';
 
 const AboutPage = () => {
-  const text = "WordQuest"; // Define the text variable
+  const text = "WordQuest"; 
 
   return (
     <div className="min h-screen flex items-center justify-center">
@@ -13,8 +13,8 @@ const AboutPage = () => {
             {text.split('').map((char, index) => (
               <span
                 key={index}
-                className="char animate-pulse inline-block" // Apply pulse animation to each letter
-                style={{ animationDelay: `${index * 0.1}s` }} // Set animation delay based on index
+                className="char animate-pulse inline-block" 
+                style={{ animationDelay: `${index * 0.1}s` }} 
               >
                 {char}
               </span>

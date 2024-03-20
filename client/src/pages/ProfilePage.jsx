@@ -3,9 +3,14 @@ import Profile from '../components/Profile';
 import Leaderboard from '../components/Leaderboard';
 import SplitType from 'split-type'; // Import SplitType library
 import gsap from 'gsap'; // Import gsap library
+import axios from 'axios';
+
+import { TbUserCircle } from "react-icons/tb";
+import Username from '../components/Username';
 
 export const ProfilePage = () => {
   const [showLeaderboard, setShowLeaderboard] = useState(false);
+
 
   useEffect(() => {
     const splitText = new SplitType('#text', { types: 'chars' });
@@ -40,9 +45,12 @@ export const ProfilePage = () => {
     setShowLeaderboard(prevState => !prevState);
   };
 
+ 
   return (
     <div className="bg-gray-900 min-h-screen flex items-center justify-center rounded">
-      <div className="relative bg-slate-800 p-20 rounded shadow-[0_0_10px_theme('colors.purple.700')] w-full max-h-dvh max-w-screen-md justify-center overflow-hidden inline-block">
+       <div className="relative bg-slate-800 p-20 rounded shadow-[0_0_10px_theme('colors.purple.700')] w-full max-h-dvh max-w-screen-md justify-center overflow-hidden ">
+       <div className="absolute inset-0 bg-gradient-to-r from-pink-500 to-purple-600 blur-md mix-blend-overlay opacity-90 pointer-events-none"></div>
+
         <div className=" mb-4 "> 
           <h2 id="text" className="text-6xl font-semibold mb-9 text-pink-500 opacity-90 bg-clip-text transition duration-150 ease-in-out">
             {/* Map through each character in the text */}
@@ -56,7 +64,11 @@ export const ProfilePage = () => {
               </span>
             ))}
           </h2> 
-          <div className="text-2xl font-semibold mb-2 bg-gradient-to-r from-pink-500 to-purple-500 text-transparent bg-clip-text">Welcome to your Profile!</div>
+          <div className="text-2xl font-semibold mb-2 text-white">
+            <TbUserCircle  className="inline-block mr-3 text-white" style={{ fontSize: '2em' }} />
+            <Username />
+        
+          </div>
           <Profile />
 
           {/* View Leaderboard Button */}

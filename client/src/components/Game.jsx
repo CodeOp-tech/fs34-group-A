@@ -124,6 +124,7 @@ const handleGuessSubmit =  async () => {
       setUserPoints(userPoints + pointsEarned); // Add points to user
       setIsAnswerSubmitted(true); // Mark the answer as submitted////
       //
+      setMaskedWord(currentWord);
       try {
         const token = localStorage.getItem('token');
         if (!token) {
@@ -262,10 +263,11 @@ const handleProfileClick = () => {
   // RETURN STATEMENT
 
   return (
-    <div className="">
+    <div className= " ">
         
-        <p className="text-2xl font-semibold mb-4 text-purple-600">Guess Word:</p>
+        <p className="text-2xl font-semibold mb-4 text-purple-600">Guess The Word:</p>
         <div className="flex justify-between items-center bg-gray-00 rounded-lg p-4 mb-4 border border-gray-300">
+        <div className="absolute inset-0 bg-gradient-to-r from-pink-500 to-purple-600 blur-md mix-blend-overlay opacity-90 pointer-events-none"></div>
           {maskedWord.split('').map((char, index) => (
             <span key={index} className={`text-2xl text-white ${index === 0 || index === maskedWord.length - 1 ? 'font-bold' : ''}`}>{char}</span>
           ))}

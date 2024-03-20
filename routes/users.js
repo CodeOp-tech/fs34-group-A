@@ -35,22 +35,36 @@ router.get("/", async function (req, res, next) {
 //         res.status(500).send(error);
 //       }
 // });
+router.get("/username", userShouldBeLoggedIn, async (req, res, next) => {
+  const {userId} = req;
+  console.log("Hi", userId);
+  try {
+    const user = await models.User.findOne({
+      where: {
+        id: userId,
+      },
+    });
+    res.send(user);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
 
 // get one by id
 // Postman Test = OK (http://localhost:4000/api/users/1)
-router.get("/:id", async function (req, res, next) {
-    const { id } = req.params;
-    try {
-        const user = await models.User.findOne({
-            where: {
-              id,
-            },
-        });
-        res.send(user);
-      } catch (error) {
-        res.status(500).send(error);
-      }
-});
+// router.get("/:id", async function (req, res, next) {
+//     const { id } = req.params;
+//     try {
+//         const user = await models.User.findOne({
+//             where: {
+//               id,
+//             },
+//         });
+//         res.send(user);
+//       } catch (error) {
+//         res.status(500).send(error);
+//       }
+// });
 
 
 // Shrudhi: 

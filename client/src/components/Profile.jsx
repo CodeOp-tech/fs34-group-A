@@ -173,12 +173,10 @@ const Profile = () => {
     <div>
           {/* Solo Game Section */}
           <button onClick={handleSolo} className=" block w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4">
-            Play Solo
+            Solo Player
           </button>
         </div>
-        <div>
-          <p className='text-white'>or play as a group</p>
-        </div>
+        
 
         {/* Create Group Section */}
         <div className="mb-4">
@@ -186,7 +184,7 @@ const Profile = () => {
         {!groupCreated && (
         <div>
           <button onClick={() => setGroupCreated(true)} className="block w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4">
-            Create Group
+            Play with a Group
           </button>
         </div>
       )}

@@ -39,19 +39,16 @@ const Leaderboard = () => {
             <div className="mb-4">
               <h3 className="underline text-lg font-semibold mb-2 text-white mt-2">Leaderboard</h3>
               <table className="w-full">
-                <thead>
-                  <tr>
-                    <th className="text-left text-white"></th>
-                    <th className="text-left text-white">Total Score</th>
-                    <th className="text-left text-white">Games Played</th>
-                  </tr>
-                </thead>
+                
                 <tbody>
                   {leaderboardData.map((data, index) => (
                     <tr key={index}>
                       <td className="text-white">{data.User && data.User.username ? data.User.username : 'N/A'}</td>
-                      <td className="text-white">{data.totalScore === null ? 'N/A' : data.totalScore}</td>
+                      <th className="text-white">Played</th>
                       <td className="text-white">{data.totalGamesPlayed === 0 ? 'N/A' : data.totalGamesPlayed}</td>
+                      <th className="text-white">Score</th>
+                      <td className="text-white">{data.totalScore === null ? 'N/A' : data.totalScore}</td>
+                      
                     </tr>
                   ))}
                 </tbody>

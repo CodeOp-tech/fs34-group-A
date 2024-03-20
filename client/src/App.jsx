@@ -45,28 +45,30 @@ export default function App() {
   useEffect(() => {
     simulateLoading();
   }, []);
-  
-    return (
-      <AuthContext.Provider value={authObject}>
-        <div className="bg-gray-900 min-w-screen min-h-screen items-center justify-center">
-          <div className="text-center">
-            <NavBar />
-            {isLoading ? ( // Conditionally render loading spinner
-              <LoadingSpinner />
-            ) : (
-              <div className="container mx-auto py-12">
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/game/:id" element={<GamePage />} />
-                  <Route path="/profilepage" element={<ProfilePage />} />
-                  <Route path="/game" element={<Game />} />
-                  <Route path="/login" element={<LoginPage />} />
-                </Routes>
-              </div>
-            )}
-          </div>
+
+  return (
+    <AuthContext.Provider value={authObject}>
+       <div className="min-h-screen overflow-y-auto">
+      <div className="bg-gray-900 min-w-screen min-h-screen flex flex-col items-center justify-center overflow-auto">
+        <div className="text-center w-full">
+          <NavBar />
+          {isLoading ? ( // Conditionally render loading spinner
+            <LoadingSpinner />
+          ) : (
+            <div className="container mx-auto px-4 py-8 md:py-12">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/game/:id" element={<GamePage />} />
+                <Route path="/profilepage" element={<ProfilePage />} />
+                <Route path="/game" element={<Game />} />
+                <Route path="/login" element={<LoginPage />} />
+              </Routes>
+            </div>
+          )}
         </div>
-      </AuthContext.Provider>
-    );
+      </div>
+      </div>
+    </AuthContext.Provider>
+  );
   }
 

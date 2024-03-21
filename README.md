@@ -1,10 +1,10 @@
 # WordQuest - A Game About Words!
-This full-stack project is a interactive guessing game app where the player can guess
+This full-stack project is an interactive guessing game app where the player can guess
 a 5-letter word within three attempts. The player can input the guesses through the interface provided.
-It is possible to play Solo or in a Groip:
+It is possible to play Solo or in a group:
 - Option to play the game solo or;
 - Invite friends to join groups to play together.
-This feature adds a social element to the game, allowing for a friendly competition.
+This feature adds a social element to the game, allowing for friendly competition.
 Each round of the game gives the player three attempts to guess the correct word. The player will need to think critically, considering possible word combinations, and use the letters revealed after each attempt as clues to make up their guesses.
 ## Built With
 - Express.js
@@ -50,7 +50,7 @@ This application works with a free external API which does not require API keys 
 https://drawsql.app/teams/shrudhi-priya/diagrams/games
 ## Possible Future Features
 - Sending notifications directly to the user, without using the email function;
-- Adding a payment method for subscription plan to access unique features;
+- Adding a payment method for a subscription plan to access unique features;
 - Create your own game avatar/emoji;
-- Social media platform, where the user can: add friends, and leave comments on groups sessions.
+- Social media platform, where the user can: add friends and leave comments on group sessions.
 _This is a group project that was created at [CodeOp](http://codeop.tech), a full stack development bootcamp in Barcelona, Spain._

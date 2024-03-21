@@ -48,7 +48,7 @@ export const ProfilePage = () => {
  
   return (
     <div className="bg-gray-900 min-h-screen flex items-center justify-center rounded">
-       <div className="relative bg-slate-800 p-20 rounded shadow-[0_0_10px_theme('colors.purple.700')] w-full max-h-dvh max-w-screen-md justify-center overflow-hidden ">
+       <div className="relative bg-slate-800 p-20 rounded shadow-[0_0_10px_theme('colors.purple.700')] w-full  max-w-screen-md justify-center overflow-hidden ">
        <div className="absolute inset-0 bg-gradient-to-r from-pink-500 to-purple-600 blur-md mix-blend-overlay opacity-90 pointer-events-none"></div>
 
         <div className=" mb-4 "> 

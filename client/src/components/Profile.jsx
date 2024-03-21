@@ -30,7 +30,7 @@ const Profile = () => {
   const navigate = useNavigate(); // Initialize the navigate function
   const [totalGamesPlayed, setTotalGamesPlayed] = useState(0);
   const [totalScore, setTotalScore] = useState(0);
-
+  const [successMessage, setSuccessMessage] = useState('');
 /*
     1. Use Effect to fetch all invitations!
     2. Fetch gameIds function: 
@@ -113,6 +113,8 @@ const Profile = () => {
       const response = await axios.post('/api/games', { emails }, config);
       console.log(response.data);
       setGroupCreated(true);
+      setSuccessMessage('Invitation sent successfully!'); 
+      window.alert('Invitation sent successfully!');
     } catch (error) {
       console.error(error);
     }
@@ -181,6 +183,9 @@ const Profile = () => {
         {/* Create Group Section */}
         <div className="mb-4">
         {/* <h3 className="underline text-lg font-semibold mb-4 text-white">Create Group</h3> */}
+        <div className="mb-4">
+        {successMessage && <div className="text-green-500 mb-4">{successMessage}</div>} {/* Display success message */}
+    
         {!groupCreated && (
         <div>
           <button onClick={() => setGroupCreated(true)} className="block w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4">
@@ -227,26 +232,36 @@ const Profile = () => {
        
         {/* Other Profile Content */}
         <form>
-          <div className="mb-6">
-            <label htmlFor="username" className="underline text-lg font-semibold mb-2 text-white mt-2">
-              Quests played  
-              </label>
-              <div className="text-white text-l mb-6">
-              {totalGamesPlayed}  
-              </div>
-            
-         
-          </div>
-          <div className="mb-4">
-            <label htmlFor="username" className="underline text-lg font-semibold mb-2 text-white mt-2">
-              Score  
-            </label>
-            <div className="text-white text-l mb-1">
-            {totalScore}
-              </div>
-          </div>
-        </form>
+  <div className="mb-4">
+    <h3 className="underline text-lg font-semibold mb-2 text-white mt-2">My Totals</h3>
+    <div className="flex items-center justify-between border-b border-gray-300 py-2">
+      <div>
+        <label htmlFor="username" className="text-lg font-semibold mr-4 text-white mt-2">
+          Total Quests Played
+        </label>
       </div>
+      <div className="text-white text-l ml-20 text-right"> {/* Added ml-2 for left margin */}
+        {totalGamesPlayed}  
+      </div>
+    </div>
+  </div>
+  
+  <div className="mb-4">
+   
+    <div className="flex items-center justify-between border-b border-gray-300 py-2">
+      <div>
+        <label htmlFor="username" className="text-lg font-semibold mr-4 text-white mt-2">
+          Total Score
+        </label>
+      </div>
+      <div className="text-white text-l ml-20 text-right"> {/* Added ml-2 for left margin */}
+        {totalScore}
+      </div>
+    </div>
+  </div>
+</form>
+      </div>
+    </div>
     </div>
   );
 };

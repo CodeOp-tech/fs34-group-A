@@ -12,6 +12,7 @@ function LoginPage() {
   const [email, setEmail] = useState("");
   const [showRegistration, setShowRegistration] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
 
   const handleUsernameChange = (e) => {
@@ -52,6 +53,9 @@ function LoginPage() {
         localStorage.setItem("token", response.data.token);
         // Navigate to profile page after successful login
         navigate("/profilepage");
+      } else {
+        setSuccessMessage("Registration successful!");
+        window.alert("Registration successful!");
       }
     } catch (error) {
       console.error("Error:", error);
@@ -78,9 +82,11 @@ function LoginPage() {
       <div className="relative bg-slate-800 p-20 rounded shadow-[0_0_10px_theme('colors.purple.700')] w-full max-h-dvh max-w-screen-md justify-center overflow-hidden ">
         <div className="absolute inset-0 bg-gradient-to-r from-pink-500 to-purple-600 blur-md mix-blend-overlay opacity-90 pointer-events-none"></div>
 
-        <h2 className="text-2xl font-semibold mb-9 bg-gradient-to-r from-pink-500 to-purple-500 text-transparent bg-clip-text">
-          {showRegistration}
-        </h2>
+        {successMessage && (
+          <h2 className="text-2xl font-semibold mb-9 bg-gradient-to-r from-pink-500 to-purple-500 text-transparent bg-clip-text">
+            {successMessage}
+          </h2>
+        )}
 
         <form onSubmit={handleSubmit}>
           {showRegistration && (

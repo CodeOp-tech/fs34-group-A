@@ -23,10 +23,10 @@ To access correctly this project, ensure to have Node.js correctly installed.
 Run `node -v` in your terminal to check your Node.js version. If Node.js is not installed,
 you can do so [here](https://nodejs.org/en).
 ### Dependencies
-- Run `npm install` in your project directory. This will install server-related dependencies such as `express`.
+- Run `npm install` in your project directory. This will install server-related dependencies such as `express`;
 - `cd client`and run `npm install`. This will install the client dependencies (React and React-Router).
 ### Database Prep
-- Access the MySQL interface in your terminal by running `mysql -u YOUR-MYSQL-USERNAME -p`
+- Access the MySQL interface in your terminal by running `mysql -u YOUR-MYSQL-USERNAME -p`;
 - Add a `.env` file to the project folder of this repository containing the MySQL authentication information for MySQL user. For example:
 ```bash
   DB_HOST=localhost
@@ -39,16 +39,16 @@ you can do so [here](https://nodejs.org/en).
 ```
 > [!IMPORTANT]
 > Please install dotenv (`npm install dotenv`).
-- Run the following commands on your MySQL console and create a new database called wordquest: `create database wordquest`, then run `use wordquest`.
-- Run 'npm run migrate' in your project directory. This will run the init.db file and initialize the database, meaning that this will create a table called 'wordquest' in your database.
+- Run the following commands on your MySQL console and create a new database called wordquest: `create database wordquest`, then run `use wordquest`;
+- Run 'npm run migrate' in your project directory. This will run the init.db file and initialize the database, meaning that this will create a table called 'wordquest' in your database;
 - Make sure you understand how the table is constructed. In your MySQL console, you can run DESCRIBE tablename; to see the structure of the table. Please note that "tablename" in DESCRIBE tablename needs to be replaced by the name of the table that you want to describe.
 ### Development
-- Run `npm start` in your project directory to start the Express Server on port 4000. It's recommended to use Nodemon for automatic server restarts during development. If you don't have Nodemon installed, you can install it globally using npm install -g Nodemon.
+- Run `npm start` in your project directory to start the Express Server on port 4000. It's recommended to use Nodemon for automatic server restarts during development. If you don't have Nodemon installed, you can install it globally using npm install -g Nodemon;
 - In another terminal, do `cd client` and run `npm run dev` to start the client in development mode with hot reloading in port 5173.
 ### APIs
-This application works with a free external API which does not require API keys (`https://random-word-api.vercel.app/api?words=10&length=5`).
+This application works with a free external API which does not require API keys. You can find it [here](`https://random-word-api.vercel.app/api?words=10&length=5`).
 ## Database Design
-https://drawsql.app/teams/shrudhi-priya/diagrams/games
+You can access WordQuest's database design [here](https://drawsql.app/teams/shrudhi-priya/diagrams/games).
 ## Possible Future Features
 - Sending notifications directly to the user, without using the email function;
 - Adding a payment method for a subscription plan to access unique features;

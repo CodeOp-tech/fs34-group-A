@@ -46,7 +46,7 @@ you can do so [here](https://nodejs.org/en).
 - Run `npm start` in your project directory to start the Express Server on port 4000. It's recommended to use Nodemon for automatic server restarts during development. If you don't have Nodemon installed, you can install it globally using npm install -g Nodemon;
 - In another terminal, do `cd client` and run `npm run dev` to start the client in development mode with hot reloading in port 5173.
 ### APIs
-This application works with a free external API which does not require API keys. You can find it [here](`https://random-word-api.vercel.app`).
+This application works with a free external API which does not require API keys. You can find it [here](https://random-word-api.vercel.app/)
 ## Database Design
 You can access WordQuest's database design [here](https://drawsql.app/teams/shrudhi-priya/diagrams/games).
 ## Possible Future Features

@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { TiStar } from "react-icons/ti";
 import { useNavigate } from 'react-router-dom';
 
 
@@ -36,14 +37,20 @@ const Leaderboard = () => {
           <div className="w-full max-w-md overflow-hidden inline-block">
     
             {/* Leaderboard Section */}
-            <div className="mb-4">
+            <div className=" mb-4">
               <h3 className="underline text-lg font-semibold mb-2 text-white mt-2">Leaderboard</h3>
-              <table className="w-full">
+              <table className=" z-100 w-full">
                 
                 <tbody>
                   {leaderboardData.map((data, index) => (
                     <tr key={index}>
-                      <td className="text-white">{data.User && data.User.username ? data.User.username : 'N/A'}</td>
+                     <td className="text-white text-left">
+                      {data.User && data.User.username ? (
+                        <>
+                    <TiStar className="text-yellow-500 inline-block mr-1" /> {data.User.username}
+                    </>
+                      ) : ('N/A')}
+                      </td>
                       <th className="text-white">Played</th>
                       <td className="text-white">{data.totalGamesPlayed === 0 ? 'N/A' : data.totalGamesPlayed}</td>
                       <th className="text-white">Score</th>

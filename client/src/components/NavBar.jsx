@@ -19,12 +19,14 @@ export default function NavBar() {
   };
 
   return (
+
+    
     <nav className="bg-gradient-to-r from-pink-500 to-purple-500 shadow-md">
       <div className=" flex justify-between items-center py-3">
         <div className="flex items-center">
           {/* Show full logo on big screens and small logo on small screens */}
-          <img src={WQlogo} className="hidden md:block h-8 w-auto mr-6 opacity-50" alt="WordQuest Full Logo" />
-          <img src={WQsLogo} className="block md:hidden h-8 w-auto mr-6 opacity-50" alt="WordQuest Small Logo" />
+          <img src={WQlogo} className="px-6 hidden md:block h-8 w-auto mr-6 opacity-50" alt="WordQuest Full Logo" />
+          <img src={WQsLogo} className="px-6 block md:hidden h-8 w-auto mr-6 opacity-50" alt="WordQuest Small Logo" />
           <Link
             to="/"
             className="text-white text-lg font-semibold hover:text-slate-800 px-8 py-3"
@@ -44,6 +46,8 @@ export default function NavBar() {
 
           <div className={`md:flex md:space-x-4 ${menuOpen ? 'block' : 'hidden'}`}>
             {/* Menu items */}
+            {isLoggedIn && (
+              <>
             <Link to="/profilepage" className="font-semibold px-8 py-3 block md:inline-block text-white hover:text-slate-800">
               Profile
             </Link>
@@ -53,14 +57,23 @@ export default function NavBar() {
             >
               Log out
             </button>
+            </>
+            )}
+             {!isLoggedIn && (
+              <>
             <Link to="/login" className="font-semibold px-8 py-3 block md:inline-block text-white hover:text-slate-800">
               <span className="flex items-center">
                 <TbUserCircle className="mr-2" style={{ fontSize: '1.5em' }} /> Sign In | Sign Up
               </span>
-            </Link>
-          </div>
+            </Link> 
+            </>
+             )}
+         
         </div>
-      </div>
+    
+        </div>
+        </div>
+    
     </nav>
   );
 }

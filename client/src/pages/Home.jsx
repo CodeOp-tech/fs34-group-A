@@ -55,7 +55,7 @@ const Home = () => {
       <>
       
         <div className="bg-gray-900 min-h-screen flex items-center justify-center rounded">
-          <div className="relative bg-slate-800 p-10 md:p-20 rounded shadow-[0_0_10px_theme('colors.purple.700')] w-full min-h-dvh max-w-screen-md justify-center overflow-hidden">
+          <div className="relative bg-slate-800 p-8 md:p-20 rounded shadow-[0_0_10px_theme('colors.purple.700')] w-full min-h-dvh max-w-screen-lg justify-center overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-r from-pink-500 to-purple-600 blur-md mix-blend-overlay opacity-90"></div>
             <div className="absolute inset-0 ring ring-pink-500 ring-offset-4 mix-blend-multiply opacity-75"></div>
   
@@ -83,7 +83,7 @@ const Home = () => {
                   Play
                 </button>
               </div>
-              <div className="z-100 mb-6 flex items-center justify-center mt-8 md:mt-16 bg-gray-900 p-3 md:p-6 rounded-lg">
+              <div className="z-100 mb-20 flex items-center justify-center mt-8 md:mt-16 bg-gray-900 p-3 md:p-6 rounded-lg">
                 {/* Video Player */}
                 <video
                   controls
@@ -98,31 +98,33 @@ const Home = () => {
               </div>
               {/* How to play section */}
               <div className="mb-10 md:mb-20 overflow-y-auto ">
-                <h1 className="text-2xl md:text-3xl font-bold mb-4 text-pink-500">How to play</h1>
-                <p className="text-md md:text-lg mb-4 text-white">
-                  Welcome to WordQuest! Dive into a world of words by playing by yourself or with your friends.
-                </p>
-                <ul className="list-disc list-inside mb-6 text-white">
-                  <li className="mb-2">
-                    <span className="font-semibold text-pink-500">Uncover the Mystery Word:</span> Guess the secret word by entering your guesses.
+              <p className="text-2xl mb-6 text-white">
+                  Welcome to WordQuest! </p>
+                  <p className="text-xg mb-6 text-white">Dive into a world of words by playing by yourself or with your friends.</p>
+                
+                <h1 className="text-2xl md:text-3xl font-bold mb-6 text-pink-500">How to play</h1>
+               
+                <ul className="text-left text-lg list-disc list-inside mb-6 text-white">
+                  <li className="mb-3">
+                    <span className="  font-semibold text-pink-500">Uncover the Mystery Word:</span> Guess the secret word by entering your guesses.
                   </li>
-                  <li className="mb-2">
+                  <li className="mb-3">
                     <span className="font-semibold text-pink-500">Submit Your Guess:</span> Type your guess and press "Enter" or click "Submit."
                   </li>
-                  <li className="mb-2">
-                    <span className="font-semibold text-pink-500">Watch Your Attempts:</span> Each incorrect guess brings you closer to revealing the word.
+                  <li className="mb-3">
+                    <span className="font-semibold text-pink-500">Track Your Attempts:</span> Incorrect guesses brings you closer to revealing the word.
                   </li>
-                  <li className="mb-2">
+                  <li className="mb-3">
                     <span className="font-semibold text-pink-500">Receive Feedback:</span> We'll let you know if your guess is correct and show the word if not.
                   </li>
-                  <li className="mb-2">
+                  <li className="mb-3">
                     <span className="font-semibold text-pink-500">Track Your Progress:</span> View all your guesses and earn points for correct ones.
                   </li>
                   <li>
                     <span className="font-semibold text-pink-500">Compete for Points:</span> See how many points you can rack up!
                   </li>
                 </ul>
-                <p className="text-md md:text-lg mb-10 text-white ">Enjoy the game!</p>
+                <p className="text-md md:text-xl mb-4 text-white ">Enjoy the game!</p>
               </div>
             </div>
           </div>

@@ -53,6 +53,7 @@ https://drawsql.app/teams/shrudhi-priya/diagrams/games
 - Sending notifications directly to the user, without using the email function;
 - Adding a payment method for a subscription plan to access unique features;
 - Create your own game avatar/emoji;
-- Social media platform, where the user can: add friends and leave comments on group sessions.❤
+- Social media platform, where the user can: add friends and leave comments on group sessions.
+
 ️
 _This is a group project that was created at [CodeOp](http://codeop.tech), a full stack development bootcamp in Barcelona, Spain._

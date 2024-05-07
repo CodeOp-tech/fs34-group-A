@@ -2,8 +2,7 @@ import React from 'react'
 import { useState, useEffect } from 'react';
 import axios from 'axios';//
 import { useNavigate } from 'react-router-dom';
-import emailjs from 'emailjs-com';
-import { useRef } from 'react';
+import Avatar from './Avatar';
 
 /*
   1. Need a section Create Group button, so when clicked : 
@@ -31,6 +30,8 @@ const Profile = () => {
   const [totalGamesPlayed, setTotalGamesPlayed] = useState(0);
   const [totalScore, setTotalScore] = useState(0);
   const [successMessage, setSuccessMessage] = useState('');
+
+  
 /*
     1. Use Effect to fetch all invitations!
     2. Fetch gameIds function: 
@@ -115,6 +116,7 @@ const Profile = () => {
       setGroupCreated(true);
       setSuccessMessage('Invitation sent successfully!'); 
       window.alert('Invitation sent successfully!');
+      window.location.reload(); 
     } catch (error) {
       console.error(error);
     }
@@ -172,13 +174,15 @@ const Profile = () => {
   return (
     <div className="min h-lg flex items-center justify-center">
     <div className="w-full max-w-md">
+    <div className="mb-4">
+       
     <div>
           {/* Solo Game Section */}
           <button onClick={handleSolo} className=" block w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4">
             Solo Player
           </button>
         </div>
-        
+        </div>
 
         {/* Create Group Section */}
         <div className="mb-4">
@@ -266,4 +270,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default Profile
